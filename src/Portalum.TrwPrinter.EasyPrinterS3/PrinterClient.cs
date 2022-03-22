@@ -7,7 +7,7 @@ using System.Text;
 namespace Portalum.TrwPrinter.EasyPrinterS3
 {
     /// <summary>
-    /// ANA-U EasyPrinterS3
+    /// ANA-U EasyPrinter S3
     /// https://download.ana-u.com/eps3_doc/out/index.html
     /// </summary>
     public class PrinterClient : IDisposable

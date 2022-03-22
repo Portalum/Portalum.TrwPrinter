@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Portalum.TrwPrinter.EasyPrinterS3.UnitTest
 {
+    [Ignore]
     [TestClass]
     public class PrinterClientTest
     {
