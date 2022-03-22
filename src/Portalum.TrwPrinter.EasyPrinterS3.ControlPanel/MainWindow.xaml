@@ -1,0 +1,34 @@
+﻿<Window x:Class="Portalum.TrwPrinter.EasyPrinterS3.ControlPanel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Portalum.TrwPrinter.EasyPrinterS3.ControlPanel"
+        mc:Ignorable="d"
+        Title="Portalum TrwPrinter EasyPrinter S3 ControlPanel" Height="330" Width="531" Closing="Window_Closing" MinHeight="330" MinWidth="500">
+    <Grid>
+        <GroupBox x:Name="GroupBoxPrint" Header="Print" Margin="10,157,0,0" HorizontalAlignment="Left" Width="284" Height="124" VerticalAlignment="Top">
+            <Grid>
+                <Button x:Name="ButtonPrint" Content="Print Image Demo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="ButtonPrintDocument_Click" Width="106"/>
+                <Button x:Name="ButtonEraseCard" Content="Erase" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Click="ButtonEraseCard_Click" Width="87"/>
+                <Button x:Name="ButtonPrintText" Content="Print Text Demo" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Click="ButtonPrintDocumentText_Click" Width="106"/>
+            </Grid>
+        </GroupBox>
+
+        <Button x:Name="ButtonConnect" Content="Connect" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top" Width="67" Click="ButtonConnect_Click"/>
+        <Button x:Name="ButtonDisconnect" Content="Disconnect" HorizontalAlignment="Left" Margin="207,9,0,0" VerticalAlignment="Top" Width="68" Click="ButtonDisconnect_Click"/>
+        <Label x:Name="LabelPrinterInfo" Content="PrinterInfos" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="315"/>
+        <local:PrinterStateUserControl x:Name="PrinterStatusUserControl" Margin="0,11,10,0" VerticalAlignment="Top" Height="127" HorizontalAlignment="Right" Width="173"/>
+        <TextBox x:Name="TextBoxIpAddress" HorizontalAlignment="Left" Margin="10,11,0,0" TextWrapping="Wrap" Text="10.15.0.99" VerticalAlignment="Top" Width="120"/>
+        <GroupBox Header="Card" Margin="10,65,0,0" Height="87" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284">
+            <Grid>
+                <Button x:Name="ButtonFeedCardFromCardHopper" Content="Feed from card hopper" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="135" Click="ButtonFeedCardFromHopper_Click"/>
+                <Button x:Name="ButtonFeedCardFromFrontFeeder" Content="Feed from front feeder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="135" Click="ButtonLoadCardFromFront_Click"/>
+                <Button x:Name="ButtonAbortFeed" Content="Abort" HorizontalAlignment="Left" Margin="162,10,0,0" VerticalAlignment="Top" Width="80" Click="ButtonAbortFeed_Click"/>
+                <Button x:Name="ButtonEjectCard" Content="Eject" HorizontalAlignment="Left" Margin="162,35,0,0" VerticalAlignment="Top" Width="80" Click="ButtonEjectCard_Click"/>
+            </Grid>
+        </GroupBox>
+        <Button x:Name="ButtonReadUid" Content="Read Uid" HorizontalAlignment="Left" Margin="336,210,0,0" VerticalAlignment="Top" Width="87" Click="ButtonReadUid_Click"/>
+
+    </Grid>
+</Window>

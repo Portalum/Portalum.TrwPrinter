@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portalum.TrwPrinter.EasyPrinterS3", "Portalum.TrwPrinter.EasyPrinterS3\Portalum.TrwPrinter.EasyPrinterS3.csproj", "{5CB11E9A-4A70-4612-BE5B-705D77E96B3B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portalum.TrwPrinter.EasyPrinterS3.ControlPanel", "Portalum.TrwPrinter.EasyPrinterS3.ControlPanel\Portalum.TrwPrinter.EasyPrinterS3.ControlPanel.csproj", "{160F3AAF-A322-4B65-9254-DD260D2DD724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portalum.TrwPrinter.EasyPrinterS3.UnitTest", "Portalum.TrwPrinter.EasyPrinterS3.UnitTest\Portalum.TrwPrinter.EasyPrinterS3.UnitTest.csproj", "{92FE1FD1-21CE-4C2F-89F4-E55EEAC3D2B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CB11E9A-4A70-4612-BE5B-705D77E96B3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CB11E9A-4A70-4612-BE5B-705D77E96B3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CB11E9A-4A70-4612-BE5B-705D77E96B3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CB11E9A-4A70-4612-BE5B-705D77E96B3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{160F3AAF-A322-4B65-9254-DD260D2DD724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{160F3AAF-A322-4B65-9254-DD260D2DD724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{160F3AAF-A322-4B65-9254-DD260D2DD724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{160F3AAF-A322-4B65-9254-DD260D2DD724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92FE1FD1-21CE-4C2F-89F4-E55EEAC3D2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92FE1FD1-21CE-4C2F-89F4-E55EEAC3D2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92FE1FD1-21CE-4C2F-89F4-E55EEAC3D2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92FE1FD1-21CE-4C2F-89F4-E55EEAC3D2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6D2696E5-466E-4839-803C-C98BB8300A5A}
+	EndGlobalSection
+EndGlobal
