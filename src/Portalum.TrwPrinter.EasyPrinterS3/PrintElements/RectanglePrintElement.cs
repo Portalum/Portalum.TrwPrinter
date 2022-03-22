@@ -32,8 +32,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
 
             using var memoryStream = new MemoryStream();
 
-            await memoryStream.WriteAsync(imagePositionCommand);
-            await memoryStream.WriteAsync(imagePosition);
+            await memoryStream.WriteAsync(imagePositionCommand, cancellationToken);
+            await memoryStream.WriteAsync(imagePosition, cancellationToken);
 
             await memoryStream.WriteAsync(imageRowInfoData, cancellationToken);
             await memoryStream.WriteAsync(paddingData, cancellationToken);

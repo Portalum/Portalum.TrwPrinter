@@ -181,9 +181,21 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
         }
 
+        public async Task FeedCardFromFrontFeederAsync(CancellationToken cancellationToken = default)
+        {
+            var commandData = new byte[] { 0x1B, 0x31 };
+            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+        }
+
         public async Task FeedCardFromHopperAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x63 };
+            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+        }
+
+        public async Task AbortFeedAsync(CancellationToken cancellationToken = default)
+        {
+            var commandData = new byte[] { 0x1B, 0x32 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
         }
 
@@ -230,17 +242,6 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                 Successful = false,
                 ErrorMessage = "Unknown error"
             };
-        }
-
-        public async Task AbortFeedAsync(CancellationToken cancellationToken = default)
-        {
-            var commandData = new byte[] { 0x1B, 0x32 };
-            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-        }
-        public async Task FeedCardFromFrontFeederAsync(CancellationToken cancellationToken = default)
-        {
-            var commandData = new byte[] { 0x1B, 0x31 };
-            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
         }
 
         public async Task SendEraseAreaAsync(CancellationToken cancellationToken = default)
@@ -306,11 +307,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
         }
 
-        public async Task GetStatusAsync(CancellationToken cancellationToken = default)
-        {
-            //var commandData = new byte[] { 0x1A };
-            var commandData = new byte[] { 0x1B, 0x3F };
-            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-        }
+        //public async Task GetStatusAsync(CancellationToken cancellationToken = default)
+        //{
+        //    //var commandData = new byte[] { 0x1A };
+        //    var commandData = new byte[] { 0x1B, 0x3F };
+        //    await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+        //}
     }
 }
