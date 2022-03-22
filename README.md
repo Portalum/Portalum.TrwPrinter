@@ -7,3 +7,5 @@ With the Portalum.TrwPrinter.EasyPrinterS3.ControlPanel you can test the ANA-U E
 
 - Install at least [.NET Desktop Runtime 6.0.3](https://dotnet.microsoft.com/download/dotnet/6.0)
 - Download and extract the ControlPanel ([download](https://github.com/Portalum/Portalum.TrwPrinter/releases/latest/download/Portalum.TrwPrinter.EasyPrinterS3.ControlPanel.zip))
+
+![Portalum.TrwPrinter.EasyPrinterS3.ControlPanel](/doc/ControlPanel.png)
