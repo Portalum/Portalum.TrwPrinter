@@ -36,7 +36,7 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
-        repo_name: Portalum/Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
+        repo_name: Portalum/Portalum.TrwPrinter
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./publish/Portalum.TrwPrinter.EasyPrinterS3.ControlPanel.zip
         tag: ${{ steps.get_version.outputs.tag }}
