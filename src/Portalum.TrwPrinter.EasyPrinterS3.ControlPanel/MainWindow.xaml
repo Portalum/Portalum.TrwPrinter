@@ -5,30 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Portalum.TrwPrinter.EasyPrinterS3.ControlPanel"
         mc:Ignorable="d"
-        Title="Portalum TrwPrinter EasyPrinter S3 ControlPanel" Height="330" Width="531" Closing="Window_Closing" MinHeight="330" MinWidth="500">
+        Title="Portalum TrwPrinter EasyPrinter S3 ControlPanel"
+        Width="531"
+        MinWidth="500"
+        Height="449"
+        MinHeight="330"
+        Closing="Window_Closing"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource SecondaryColor}"
+        Template="{StaticResource WindowWithColoredTitleBar}">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0 64 0 0" NonClientFrameEdges="Left,Bottom,Right" />
+    </WindowChrome.WindowChrome>
+
     <Grid>
-        <GroupBox x:Name="GroupBoxPrint" Header="Print" Margin="10,157,0,0" HorizontalAlignment="Left" Width="284" Height="124" VerticalAlignment="Top">
+        <GroupBox Template="{StaticResource GroupBoxWithHeader}" x:Name="GroupBoxPrint" Header="Print" Foreground="White" Margin="0,184,0,0" HorizontalAlignment="Left" Width="284" Height="116" VerticalAlignment="Top">
             <Grid>
-                <Button x:Name="ButtonPrint" Content="Print Image Demo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="ButtonPrintDocument_Click" Width="106"/>
-                <Button x:Name="ButtonEraseCard" Content="Erase" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Click="ButtonEraseCard_Click" Width="87"/>
-                <Button x:Name="ButtonPrintText" Content="Print Text Demo" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Click="ButtonPrintDocumentText_Click" Width="106"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrint" Content="Print Image Demo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="ButtonPrintDocument_Click" Width="106" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonEraseCard" Content="Erase" HorizontalAlignment="Left" Margin="175,10,0,0" VerticalAlignment="Top" Click="ButtonEraseCard_Click" Width="87" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintText" Content="Print Text Demo" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Click="ButtonPrintDocumentText_Click" Width="106" Height="29"/>
             </Grid>
         </GroupBox>
 
-        <Button x:Name="ButtonConnect" Content="Connect" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top" Width="67" Click="ButtonConnect_Click"/>
-        <Button x:Name="ButtonDisconnect" Content="Disconnect" HorizontalAlignment="Left" Margin="207,9,0,0" VerticalAlignment="Top" Width="68" Click="ButtonDisconnect_Click"/>
-        <Label x:Name="LabelPrinterInfo" Content="PrinterInfos" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="315"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonConnect" Content="Connect" HorizontalAlignment="Left" Margin="135,9,0,0" VerticalAlignment="Top" Width="67" Height="29" Click="ButtonConnect_Click"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonDisconnect" Content="Disconnect" HorizontalAlignment="Left" Margin="207,9,0,0" VerticalAlignment="Top" Width="68" Height="29" Click="ButtonDisconnect_Click"/>
+        <Label x:Name="LabelPrinterInfo" Content="PrinterInfos" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="315" Foreground="White"/>
         <local:PrinterStateUserControl x:Name="PrinterStatusUserControl" Margin="0,11,10,0" VerticalAlignment="Top" Height="127" HorizontalAlignment="Right" Width="173"/>
-        <TextBox x:Name="TextBoxIpAddress" HorizontalAlignment="Left" Margin="10,11,0,0" TextWrapping="Wrap" Text="10.15.0.99" VerticalAlignment="Top" Width="120"/>
-        <GroupBox Header="Card" Margin="10,65,0,0" Height="87" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284">
+        <TextBox x:Name="TextBoxIpAddress" HorizontalAlignment="Left" Margin="10,9,0,0" TextWrapping="Wrap" Text="10.15.0.99" VerticalAlignment="Top" Width="120" FontSize="20"/>
+        <GroupBox Template="{StaticResource GroupBoxWithHeader}" Header="Card" Foreground="White" Margin="0,60,0,0" Height="119" VerticalAlignment="Top" HorizontalAlignment="Left" Width="284">
             <Grid>
-                <Button x:Name="ButtonFeedCardFromCardHopper" Content="Feed from card hopper" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="135" Click="ButtonFeedCardFromHopper_Click"/>
-                <Button x:Name="ButtonFeedCardFromFrontFeeder" Content="Feed from front feeder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="135" Click="ButtonLoadCardFromFront_Click"/>
-                <Button x:Name="ButtonAbortFeed" Content="Abort" HorizontalAlignment="Left" Margin="162,10,0,0" VerticalAlignment="Top" Width="80" Click="ButtonAbortFeed_Click"/>
-                <Button x:Name="ButtonEjectCard" Content="Eject" HorizontalAlignment="Left" Margin="162,35,0,0" VerticalAlignment="Top" Width="80" Click="ButtonEjectCard_Click"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonFeedCardFromCardHopper" Content="Feed from card hopper" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="135" Height="29" Click="ButtonFeedCardFromHopper_Click"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonFeedCardFromFrontFeeder" Content="Feed from front feeder" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="135" Height="29" Click="ButtonLoadCardFromFront_Click"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonAbortFeed" Content="Abort" HorizontalAlignment="Left" Margin="162,10,0,0" VerticalAlignment="Top" Width="80" Height="29" Click="ButtonAbortFeed_Click"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonEjectCard" Content="Eject" HorizontalAlignment="Left" Margin="162,45,0,0" VerticalAlignment="Top" Width="80" Height="29" Click="ButtonEjectCard_Click"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="ButtonReadUid" Content="Read Uid" HorizontalAlignment="Left" Margin="336,210,0,0" VerticalAlignment="Top" Width="87" Click="ButtonReadUid_Click"/>
+        <GroupBox Template="{StaticResource GroupBoxWithHeader}" x:Name="GroupBoxRfid" Header="Rfid" Foreground="White" Margin="0,300,0,0" HorizontalAlignment="Left" Width="284" Height="109" VerticalAlignment="Top">
+            <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonReadUid" Content="Read Uid" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="29" Click="ButtonReadUid_Click"/>
+        </GroupBox>
 
     </Grid>
 </Window>
