@@ -29,7 +29,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             using var memoryStream = new MemoryStream();
 
             //TODO: This is more a print document config
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x55 }, cancellationToken); //U (Rotates whole card (text and graphic) by 180 degrees.)
+            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x55 }, cancellationToken); //U (Rotates whole card (text and graphic) by 180°)
 
             //Orientation
             if (this._textOrientation == TextOrientation.Normal)
@@ -65,7 +65,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             await memoryStream.WriteAsync(Encoding.ASCII.GetBytes($"{this._positionY:D4}"), cancellationToken);
 
             //Content
-            await memoryStream.WriteAsync(Encoding.ASCII.GetBytes(this._text), cancellationToken);
+            await memoryStream.WriteAsync(Encoding.GetEncoding("ISO-8859-1").GetBytes(this._text), cancellationToken);
 
             return memoryStream.ToArray();
         }

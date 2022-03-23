@@ -142,10 +142,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             this.LabelPrinterInfo.Content = $"Firmware:{firmware} | SerialNumber:{serialNumber}";
         }
 
-        private async void ButtonPrintDocument_Click(object sender, RoutedEventArgs e)
+        private async void ButtonPrintImageDemo_Click(object sender, RoutedEventArgs e)
         {
-            var printDocument = new PrintDocument();
-
             var openFileDialog = new OpenFileDialog();
             var dialogResult = openFileDialog.ShowDialog();
             if (dialogResult.HasValue && !dialogResult.Value)
@@ -153,15 +151,17 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 return;
             }
 
-            printDocument.AddElement(new ImagePrintElement(openFileDialog.FileName, 200));
+            var filePath = openFileDialog.FileName;
+
+            var printDocument = new PrintDocument();
+            printDocument.AddElement(new ImagePrintElement(filePath, 200));
 
             await this._printerClient.SendPrintDemoCardAsync(printDocument);
         }
 
-        private async void ButtonPrintDocumentText_Click(object sender, RoutedEventArgs e)
+        private async void ButtonPrintTextDemo_Click(object sender, RoutedEventArgs e)
         {
             var printDocument = new PrintDocument();
-
             printDocument.AddElement(new TextPrintElement("Position X13", 13, 650));
             printDocument.AddElement(new TextPrintElement("Position X15", 15, 650));
             printDocument.AddElement(new TextPrintElement("Position X17", 17, 650));
@@ -172,6 +172,26 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             printDocument.AddElement(new TextPrintElement("Position X65", 65, 650));
             printDocument.AddElement(new TextPrintElement("Position X75", 75, 650));
             printDocument.AddElement(new TextPrintElement("Position X85", 85, 650));
+
+            await this._printerClient.SendPrintDemoCardAsync(printDocument);
+        }
+
+        private async void ButtonPrintFullDemo_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            var dialogResult = openFileDialog.ShowDialog();
+            if (dialogResult.HasValue && !dialogResult.Value)
+            {
+                return;
+            }
+
+            var filePath = openFileDialog.FileName;
+
+            var printDocument = new PrintDocument();
+            printDocument.AddElement(new ImagePrintElement(filePath, 650));
+            printDocument.AddElement(new TextPrintElement("Max Mustermann", 35, 650, TextSize.Large));
+            printDocument.AddElement(new TextPrintElement("Langestraße 4a", 42, 650, TextSize.Medium));
+            printDocument.AddElement(new TextPrintElement("10115 Berlin", 49, 650, TextSize.Medium));
 
             await this._printerClient.SendPrintDemoCardAsync(printDocument);
         }
