@@ -1,5 +1,21 @@
 # Portalum.TrwPrinter
 
+<img src="https://raw.githubusercontent.com/Portalum/Portalum.TrwPrinter/main/doc/logo.png" width="150" title="Portalum TrwPrinter Client" alt="Portalum TrwPrinter Client" align="left">
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+## How can I use it?
+
+The package is available via [nuget](https://www.nuget.org/packages/Portalum.TrwPrinter.EasyPrinterS3)
+```
+PM> install-package Portalum.TrwPrinter.EasyPrinterS3
+```
+
 ## EasyPrinterS3.ControlPanel
 With the Portalum.TrwPrinter.EasyPrinterS3.ControlPanel you can test the ANA-U EasyPrinter S3
 
