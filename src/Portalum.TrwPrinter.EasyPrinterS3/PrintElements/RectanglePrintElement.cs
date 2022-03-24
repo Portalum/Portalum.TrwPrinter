@@ -27,28 +27,28 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var internalAreaData = this.DrawInternalArea();
             var imageRowInfoData = new byte[] { 0x1B, 0x51, (byte)(fullLineData.Length + paddingByteCount) };
 
-            var imagePositionCommand = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var imagePosition = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+            var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
+            var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
 
             using var memoryStream = new MemoryStream();
 
-            await memoryStream.WriteAsync(imagePositionCommand, cancellationToken);
-            await memoryStream.WriteAsync(imagePosition, cancellationToken);
+            await memoryStream.WriteAsync(imagePositionCommandData, 0, imagePositionCommandData.Length, cancellationToken);
+            await memoryStream.WriteAsync(imagePositionData, 0, imagePositionData.Length, cancellationToken);
 
-            await memoryStream.WriteAsync(imageRowInfoData, cancellationToken);
-            await memoryStream.WriteAsync(paddingData, cancellationToken);
-            await memoryStream.WriteAsync(fullLineData, cancellationToken);
+            await memoryStream.WriteAsync(imageRowInfoData, 0, imageRowInfoData.Length, cancellationToken);
+            await memoryStream.WriteAsync(paddingData, 0, paddingData.Length, cancellationToken);
+            await memoryStream.WriteAsync(fullLineData, 0, fullLineData.Length, cancellationToken);
 
             for (var height = 0; height < this._height - 2; height++)
             {
-                await memoryStream.WriteAsync(imageRowInfoData, cancellationToken);
-                await memoryStream.WriteAsync(paddingData, cancellationToken);
-                await memoryStream.WriteAsync(internalAreaData, cancellationToken);
+                await memoryStream.WriteAsync(imageRowInfoData, 0, imageRowInfoData.Length, cancellationToken);
+                await memoryStream.WriteAsync(paddingData, 0, paddingData.Length, cancellationToken);
+                await memoryStream.WriteAsync(internalAreaData, 0, internalAreaData.Length, cancellationToken);
             }
 
-            await memoryStream.WriteAsync(imageRowInfoData, cancellationToken);
-            await memoryStream.WriteAsync(paddingData, cancellationToken);
-            await memoryStream.WriteAsync(fullLineData, cancellationToken);
+            await memoryStream.WriteAsync(imageRowInfoData, 0, imageRowInfoData.Length, cancellationToken);
+            await memoryStream.WriteAsync(paddingData, 0, paddingData.Length, cancellationToken);
+            await memoryStream.WriteAsync(fullLineData, 0, fullLineData.Length, cancellationToken);
 
             return memoryStream.ToArray();
         }

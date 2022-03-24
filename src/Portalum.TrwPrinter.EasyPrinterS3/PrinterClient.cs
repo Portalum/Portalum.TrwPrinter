@@ -23,6 +23,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
 
         public event Action<PrinterState> PrinterStateChanged;
 
+        /// <summary>
+        /// PrinterClient
+        /// </summary>
+        /// <param name="deviceCommunication"></param>
+        /// <param name="logger"></param>
         public PrinterClient(
             IDeviceCommunication deviceCommunication,
             ILogger logger = default)
@@ -251,12 +256,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var startY = 0;
             var endY = 1100;
 
-            //Set erase area mode
-            var deleteCardData = new byte[] { 0x1B, 0x4C, 0x31 }; //L1
-            await this._deviceCommunication.SendAsync(deleteCardData, cancellationToken);
+            var setEraseAreaModeCommandData = new byte[] { 0x1B, 0x4C, 0x31 }; //L1
+            await this._deviceCommunication.SendAsync(setEraseAreaModeCommandData, cancellationToken);
 
-            var someData = Encoding.ASCII.GetBytes($"{startX:D2}{startY:D4}{endX:D2}{endY:D4}");
-            await this._deviceCommunication.SendAsync(someData, cancellationToken);   
+            var setEraseAreaModePositionData = Encoding.ASCII.GetBytes($"{startX:D2}{startY:D4}{endX:D2}{endY:D4}");
+            await this._deviceCommunication.SendAsync(setEraseAreaModePositionData, cancellationToken);   
 
             //Start Print
             var startPrintData = new byte[] { 0x0C }; //\f
@@ -271,6 +275,12 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             await this._deviceCommunication.SendAsync(printData, cancellationToken);
         }
 
+        /// <summary>
+        /// Set a text on the display of the printer
+        /// </summary>
+        /// <param name="displayTextConfig"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task SetDisplayTextAsync(
             DisplayTextConfig displayTextConfig,
             CancellationToken cancellationToken = default)
@@ -280,7 +290,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
 
             using (var memoryStream = new MemoryStream())
             {
-                memoryStream.Write(commandData);
+                await memoryStream.WriteAsync(commandData, 0, commandData.Length, cancellationToken);
 
                 var line1 = displayTextConfig.Line1 ?? string.Empty;
                 var line2 = displayTextConfig.Line2 ?? string.Empty;
@@ -292,15 +302,21 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                 var line3Data = Encoding.ASCII.GetBytes(line3.PadRight(lineLength, ' '));
                 var line4Data = Encoding.ASCII.GetBytes(line4.PadRight(lineLength, ' '));
 
-                memoryStream.Write(line1Data);
-                memoryStream.Write(line2Data);
-                memoryStream.Write(line3Data);
-                memoryStream.Write(line4Data);
+                await memoryStream.WriteAsync(line1Data, 0, line1Data.Length, cancellationToken);
+                await memoryStream.WriteAsync(line2Data, 0, line2Data.Length, cancellationToken);
+                await memoryStream.WriteAsync(line3Data, 0, line3Data.Length, cancellationToken);
+                await memoryStream.WriteAsync(line4Data, 0, line4Data.Length, cancellationToken);
 
-                await this._deviceCommunication.SendAsync(memoryStream.ToArray(), cancellationToken);
+                var commdandData = memoryStream.ToArray();
+                await this._deviceCommunication.SendAsync(commdandData, cancellationToken);
             }
         }
 
+        /// <summary>
+        /// Reset the text on the display of the printer to default
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task ResetDisplayTextAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x24, 0x44, 0x30 };

@@ -3,14 +3,27 @@
   <PropertyGroup>
     <Authors>Tino Hager</Authors>
     <Company>Portalum GmbH</Company>
-    <Description></Description>
+    <Description>Printer Communication for ANA-U EasyPrinter S3</Description>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+	  
+    <LangVersion>latestMajor</LangVersion>
+
     <Nullable>disable</Nullable>
+
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Portalum/Portalum.TrwPrinter</PackageProjectUrl>
+    <PackageTags>trw-printer trw thermo-rewrite printer-communication</PackageTags>
+
+    <RepositoryUrl>https://github.com/Portalum/Portalum.TrwPrinter</RepositoryUrl>
+
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
+
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +32,14 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="LICENSE" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\doc\logo.png" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 
 </Project>

@@ -22,16 +22,21 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var paddingData = Enumerable.Repeat((byte)0x00, paddingByteCount).ToArray();
             var imagePrintCommand = new byte[] { 0x1B, 0x51 };
 
+#if (NET6_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER)
             var imageData = await File.ReadAllBytesAsync(this._imagePath, cancellationToken);
+#else
+            var imageData = File.ReadAllBytes(this._imagePath);
+#endif
+
             var imagePrintPackage = ImageHelper.GetImagePrintPackage(imageData);
 
-            var imagePositionCommand = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var imagePosition = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+            var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
+            var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
 
             using var memoryStream = new MemoryStream();
 
-            await memoryStream.WriteAsync(imagePositionCommand, cancellationToken);
-            await memoryStream.WriteAsync(imagePosition, cancellationToken);
+            await memoryStream.WriteAsync(imagePositionCommandData, 0, imagePositionCommandData.Length, cancellationToken);
+            await memoryStream.WriteAsync(imagePositionData, 0, imagePositionData.Length, cancellationToken);
 
             for (var y = 0; y < imagePrintPackage.Rows; y++)
             {

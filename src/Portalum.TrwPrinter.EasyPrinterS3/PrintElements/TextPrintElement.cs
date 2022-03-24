@@ -29,43 +29,57 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             using var memoryStream = new MemoryStream();
 
             //TODO: This is more a print document config
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x55 }, cancellationToken); //U (Rotates whole card (text and graphic) by 180°)
+            var rotateWholeCardData = new byte[] { 0x1B, 0x55 };
+            await memoryStream.WriteAsync(rotateWholeCardData, 0, rotateWholeCardData.Length, cancellationToken); //U (Rotates whole card (text and graphic) by 180°)
 
             //Orientation
             if (this._textOrientation == TextOrientation.Normal)
             {
-                await memoryStream.WriteAsync(new byte[] { 0x1B, 0x4E }, cancellationToken); //N
+                var textOrientationNormalData = new byte[] { 0x1B, 0x4E };
+                await memoryStream.WriteAsync(textOrientationNormalData, 0, textOrientationNormalData.Length, cancellationToken); //N
             }
             else if (this._textOrientation == TextOrientation.Rotated90)
             {
-                await memoryStream.WriteAsync(new byte[] { 0x1B, 0x4F }, cancellationToken); //O
+                var textOrientationRotated90Data = new byte[] { 0x1B, 0x4 };
+                await memoryStream.WriteAsync(textOrientationRotated90Data, 0, textOrientationRotated90Data.Length, cancellationToken); //O
             }
 
             //Format text
             switch (this._textSize)
             {
                 case TextSize.Small:
-                    await memoryStream.WriteAsync(new byte[] { 0x1B, 0x43 }, cancellationToken);
+                    var smallTextData = new byte[] { 0x1B, 0x43 };
+                    await memoryStream.WriteAsync(smallTextData, 0, smallTextData.Length, cancellationToken);
                     break;
                 case TextSize.Medium:
-                    await memoryStream.WriteAsync(new byte[] { 0x1B, 0x44 }, cancellationToken);
+                    var mediumTextData = new byte[] { 0x1B, 0x43 };
+                    await memoryStream.WriteAsync(mediumTextData, 0, mediumTextData.Length, cancellationToken);
                     break;
                 case TextSize.Large:
-                    await memoryStream.WriteAsync(new byte[] { 0x1B, 0x45 }, cancellationToken);
+                    var largeTextData = new byte[] { 0x1B, 0x43 };
+                    await memoryStream.WriteAsync(largeTextData, 0, largeTextData.Length, cancellationToken);
                     break;
             }
-            
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x62, 0x30 }, cancellationToken); //b0 (Print double-width characters)
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x77, 0x30 }, cancellationToken); //w0 (Print double-height characters)
+
+            var printDoubleWidthData = new byte[] { 0x1B, 0x62, 0x30 };
+            var printDoubleHeightData = new byte[] { 0x1B, 0x77, 0x30 };
+            await memoryStream.WriteAsync(printDoubleWidthData, 0, printDoubleWidthData.Length, cancellationToken); //b0 (Print double-width characters)
+            await memoryStream.WriteAsync(printDoubleHeightData, 0, printDoubleHeightData.Length, cancellationToken); //w0 (Print double-height characters)
 
             //Position
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x25, 0x78 }, cancellationToken); //%x
-            await memoryStream.WriteAsync(Encoding.ASCII.GetBytes($"{this._positionX:D2}"), cancellationToken);
-            await memoryStream.WriteAsync(new byte[] { 0x1B, 0x25, 0x79 }, cancellationToken);//%y
-            await memoryStream.WriteAsync(Encoding.ASCII.GetBytes($"{this._positionY:D4}"), cancellationToken);
+            var xPositionCommandData = new byte[] { 0x1B, 0x25, 0x78 }; //%x
+            var xPositionData = Encoding.ASCII.GetBytes($"{this._positionX:D2}");
+            var yPositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
+            var yPositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+
+            await memoryStream.WriteAsync(xPositionCommandData, 0, xPositionCommandData.Length, cancellationToken);
+            await memoryStream.WriteAsync(xPositionData, 0, xPositionData.Length, cancellationToken);
+            await memoryStream.WriteAsync(yPositionCommandData, 0, yPositionCommandData.Length, cancellationToken);
+            await memoryStream.WriteAsync(yPositionData, 0, yPositionData.Length, cancellationToken);
 
             //Content
-            await memoryStream.WriteAsync(Encoding.GetEncoding("ISO-8859-1").GetBytes(this._text), cancellationToken);
+            var contentData = Encoding.GetEncoding("ISO-8859-1").GetBytes(this._text);
+            await memoryStream.WriteAsync(contentData, 0, contentData.Length, cancellationToken);
 
             return memoryStream.ToArray();
         }
