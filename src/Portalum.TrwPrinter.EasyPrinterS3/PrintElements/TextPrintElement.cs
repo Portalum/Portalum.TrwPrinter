@@ -52,11 +52,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
                     await memoryStream.WriteAsync(smallTextData, 0, smallTextData.Length, cancellationToken);
                     break;
                 case TextSize.Medium:
-                    var mediumTextData = new byte[] { 0x1B, 0x43 };
+                    var mediumTextData = new byte[] { 0x1B, 0x44 };
                     await memoryStream.WriteAsync(mediumTextData, 0, mediumTextData.Length, cancellationToken);
                     break;
                 case TextSize.Large:
-                    var largeTextData = new byte[] { 0x1B, 0x43 };
+                    var largeTextData = new byte[] { 0x1B, 0x45 };
                     await memoryStream.WriteAsync(largeTextData, 0, largeTextData.Length, cancellationToken);
                     break;
             }
