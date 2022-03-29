@@ -15,6 +15,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private readonly ILogger _logger;
         private readonly IDeviceCommunication _deviceCommunication;
         private readonly CancellationTokenSource _disposeCancellationTokenSource;
+        private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
 
         private byte[] _dataBuffer;
         private PrinterState _printerState;
@@ -99,6 +100,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             byte[] sendData,
             CancellationToken cancellationToken = default)
         {
+            await this._semaphoreSlim.WaitAsync();
+
             byte[] buffer = null;
 
             using var receiveCancellationTokenSource = new CancellationTokenSource();
@@ -140,6 +143,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             finally
             {
                 this._deviceCommunication.DataReceived -= DataReceived;
+                this._semaphoreSlim.Release();
             }
         }
 
