@@ -23,18 +23,28 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 builder.AddFile("default.log", LogLevel.Trace, outputTemplate: "{Timestamp:HH:mm:ss.fff} {Level:u3} {SourceContext} {Message:lj}{NewLine}{Exception}").SetMinimumLevel(LogLevel.Debug));
 
             this.InitializeComponent();
-
-            this.ButtonDisconnect.IsEnabled = false;
-            this.ButtonEjectCard.IsEnabled = false;
-            this.ButtonFeedCardFromFrontFeeder.IsEnabled = false;
-            this.ButtonFeedCardFromCardHopper.IsEnabled = false;
-            this.ButtonReadUid.IsEnabled = false;
-            this.GroupBoxPrint.IsEnabled = false;
+            this.ResetControls();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.CleanupPrinterClientAsync().GetAwaiter().GetResult();
+        }
+
+        private void ResetControls()
+        {
+            this.ButtonConnect.IsEnabled = true;
+            this.ButtonDisconnect.IsEnabled = false;
+
+            this.LabelInfo.Content = string.Empty;
+            this.LabelRfid.Content = string.Empty;
+
+            this.ButtonAbortFeed.IsEnabled = false;
+            this.ButtonEjectCard.IsEnabled = false;
+            this.ButtonFeedCardFromFrontFeeder.IsEnabled = false;
+            this.ButtonFeedCardFromCardHopper.IsEnabled = false;
+            this.ButtonReadUid.IsEnabled = false;
+            this.GroupBoxPrint.IsEnabled = false;
         }
 
         private bool IsReady()
@@ -125,6 +135,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 this.LabelInfo.Content = "Cannot connect";
                 await Task.Delay(500);
                 this.LabelInfo.Content = string.Empty;
+
                 this.TextBoxIpAddress.IsEnabled = true;
                 this.ButtonConnect.IsEnabled = true;
                 return;
@@ -132,6 +143,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
             this.LabelInfo.Content = "Connected";
             this.TextBoxIpAddress.IsEnabled = true;
+            this.ButtonAbortFeed.IsEnabled = true;
             this.ButtonConnect.IsEnabled = false;
             this.ButtonDisconnect.IsEnabled = true;
 
@@ -143,8 +155,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             await this.CleanupPrinterClientAsync();
             this.PrinterStatusUserControl.ResetStates();
 
-            this.ButtonConnect.IsEnabled = true;
-            this.ButtonDisconnect.IsEnabled = false;
+            this.ResetControls();
         }
 
         private async void ButtonEjectCard_Click(object sender, RoutedEventArgs e)
@@ -296,7 +307,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 return;
             }
 
-            this.LabelRfid.Content = $"Cannot read {rfidInfo.ErrorMessage}";
+            this.LabelRfid.Content = $"Error: {rfidInfo.ErrorMessage}";
         }
     }
 }
