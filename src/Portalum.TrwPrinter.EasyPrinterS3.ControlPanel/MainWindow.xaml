@@ -31,7 +31,7 @@
 
         <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonConnect" Content="Connect" HorizontalAlignment="Left" Margin="177,9,0,0" VerticalAlignment="Top" Width="60" Height="29" Click="ButtonConnect_Click"/>
         <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonDisconnect" Content="Disconnect" HorizontalAlignment="Left" Margin="242,9,0,0" VerticalAlignment="Top" Width="68" Height="29" Click="ButtonDisconnect_Click"/>
-        <Label x:Name="LabelPrinterInfo" Content="PrinterInfos" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="315" Foreground="White"/>
+        <Label x:Name="LabelInfo" Content="PrinterInfos" HorizontalAlignment="Left" Margin="10,34,0,0" VerticalAlignment="Top" Width="315" Foreground="White"/>
         <local:PrinterStateUserControl x:Name="PrinterStatusUserControl" Margin="0,11,10,0" VerticalAlignment="Top" Height="127" HorizontalAlignment="Right" Width="173"/>
         <TextBox x:Name="TextBoxIpAddress" HorizontalAlignment="Left" Margin="10,9,0,0" TextWrapping="Wrap" Text="10.15.0.99" VerticalAlignment="Top" Width="158" FontSize="20"/>
         <GroupBox Template="{StaticResource GroupBoxWithHeader}" Header="Card" Foreground="White" Margin="0,60,0,0" Height="119" VerticalAlignment="Top" HorizontalAlignment="Left" Width="310">
@@ -43,7 +43,10 @@
             </Grid>
         </GroupBox>
         <GroupBox Template="{StaticResource GroupBoxWithHeader}" x:Name="GroupBoxRfid" Header="Rfid" Foreground="White" Margin="0,300,0,0" HorizontalAlignment="Left" Width="310" Height="109" VerticalAlignment="Top">
-            <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonReadUid" Content="Read Uid" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="29" Click="ButtonReadUid_Click"/>
+            <Grid>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonReadUid" Content="Read Uid" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="87" Height="29" Click="ButtonReadUid_Click"/>
+                <Label x:Name="LabelRfid" Content="RfidInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="102,10,0,0" Foreground="White"/>
+            </Grid>
         </GroupBox>
 
     </Grid>

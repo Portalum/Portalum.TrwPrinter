@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using Portalum.TrwPrinter.EasyPrinterS3.Models;
 using Portalum.TrwPrinter.EasyPrinterS3.PrintElements;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -27,12 +28,23 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             this.ButtonEjectCard.IsEnabled = false;
             this.ButtonFeedCardFromFrontFeeder.IsEnabled = false;
             this.ButtonFeedCardFromCardHopper.IsEnabled = false;
+            this.ButtonReadUid.IsEnabled = false;
             this.GroupBoxPrint.IsEnabled = false;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.CleanupPrinterClientAsync().GetAwaiter().GetResult();
+        }
+
+        private bool IsReady()
+        {
+            if (this._printerClient == null || !this._deviceCommunication.IsConnected)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private void PreparePrinterClient(string ipAddress)
@@ -90,19 +102,36 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             {
                 this.GroupBoxPrint.IsEnabled = printerState.CardInPrintPosition;
             });
+
+            this.ButtonReadUid.Dispatcher.Invoke(() =>
+            {
+                this.ButtonReadUid.IsEnabled = printerState.CardInPrintPosition;
+            });
         }
 
         private async void ButtonConnect_Click(object sender, RoutedEventArgs e)
         {
+            this.ButtonConnect.IsEnabled = false;
+            this.TextBoxIpAddress.IsEnabled = false;
+            this.LabelInfo.Content = "Connecting...";
+
             await this.CleanupPrinterClientAsync();
 
             this.PreparePrinterClient(this.TextBoxIpAddress.Text);
 
-            if (!await this._printerClient.ConnectAsync())
+            using var cancellationTokenSource = new CancellationTokenSource(1000);
+            if (!await this._printerClient.ConnectAsync(cancellationTokenSource.Token))
             {
+                this.LabelInfo.Content = "Cannot connect";
+                await Task.Delay(500);
+                this.LabelInfo.Content = string.Empty;
+                this.TextBoxIpAddress.IsEnabled = true;
+                this.ButtonConnect.IsEnabled = true;
                 return;
             }
 
+            this.LabelInfo.Content = "Connected";
+            this.TextBoxIpAddress.IsEnabled = true;
             this.ButtonConnect.IsEnabled = false;
             this.ButtonDisconnect.IsEnabled = true;
 
@@ -120,30 +149,55 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
         private async void ButtonEjectCard_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             await this._printerClient.EjectCardAsync();
         }
 
         private async void ButtonFeedCardFromHopper_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             await this._printerClient.FeedCardFromHopperAsync();
         }
 
         private async void ButtonAbortFeed_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             await this._printerClient.AbortFeedAsync();
         }
 
         private async Task LoadPrinterInfosAsync()
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             var firmware = await this._printerClient.GetFirmwareAsync();
             await Task.Delay(50);
             var serialNumber = await this._printerClient.GetPrinterSerialNumberAsync();
 
-            this.LabelPrinterInfo.Content = $"Firmware:{firmware} | SerialNumber:{serialNumber}";
+            this.LabelInfo.Content = $"Firmware:{firmware} | SerialNumber:{serialNumber}";
         }
 
         private async void ButtonPrintImageDemo_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             var openFileDialog = new OpenFileDialog();
             var dialogResult = openFileDialog.ShowDialog();
             if (dialogResult.HasValue && !dialogResult.Value)
@@ -161,6 +215,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
         private async void ButtonPrintTextDemo_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             var printDocument = new PrintDocument();
             printDocument.AddElement(new TextPrintElement("Position X13", 13, 650));
             printDocument.AddElement(new TextPrintElement("Position X15", 15, 650));
@@ -178,6 +237,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
         private async void ButtonPrintFullDemo_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             var openFileDialog = new OpenFileDialog();
             var dialogResult = openFileDialog.ShowDialog();
             if (dialogResult.HasValue && !dialogResult.Value)
@@ -198,25 +262,41 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
         private async void ButtonLoadCardFromFront_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             await this._printerClient.FeedCardFromFrontFeederAsync();
         }
 
         private async void ButtonEraseCard_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
             await this._printerClient.SendEraseAreaAsync();
         }
 
         private async void ButtonReadUid_Click(object sender, RoutedEventArgs e)
         {
+            if (!this.IsReady())
+            {
+                return;
+            }
+
+            this.LabelRfid.Content = "please wait...";
             var rfidInfo = await this._printerClient.ReadCardMifareUidAsync();
 
             if (rfidInfo.Successful)
             {
-                MessageBox.Show(rfidInfo.Uid, "Uid", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.LabelRfid.Content = rfidInfo.Uid;
                 return;
             }
 
-            MessageBox.Show($"Cannot read {rfidInfo.ErrorMessage}", "Uid Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            this.LabelRfid.Content = $"Cannot read {rfidInfo.ErrorMessage}";
         }
     }
 }
