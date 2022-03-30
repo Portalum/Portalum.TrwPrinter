@@ -9,19 +9,25 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
         private readonly int _positionY;
         private readonly TextSize _textSize;
         private readonly TextOrientation _textOrientation;
+        private readonly bool _textDoubleWidth;
+        private readonly bool _textDoubleHeight;
 
         public TextPrintElement(
             string text,
             int positionX = 0,
             int positionY = 0,
             TextSize textSize = TextSize.Medium,
-            TextOrientation textOrientation = TextOrientation.Normal)
+            TextOrientation textOrientation = TextOrientation.Normal,
+            bool textDoubleWidth = false,
+            bool textDoubleHeight = false)
         {
             this._text = text;
             this._positionX = positionX;
             this._positionY = positionY;
             this._textSize = textSize;
             this._textOrientation = textOrientation;
+            this._textDoubleWidth = textDoubleWidth;
+            this._textDoubleHeight = textDoubleHeight;
         }
 
         public override async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
@@ -40,11 +46,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             }
             else if (this._textOrientation == TextOrientation.Rotated90)
             {
-                var textOrientationRotated90Data = new byte[] { 0x1B, 0x4 };
+                var textOrientationRotated90Data = new byte[] { 0x1B, 0x4F };
                 await memoryStream.WriteAsync(textOrientationRotated90Data, 0, textOrientationRotated90Data.Length, cancellationToken); //O
             }
 
-            //Format text
+            //Text size
             switch (this._textSize)
             {
                 case TextSize.Small:
@@ -61,10 +67,31 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
                     break;
             }
 
-            var printDoubleWidthData = new byte[] { 0x1B, 0x62, 0x30 };
-            var printDoubleHeightData = new byte[] { 0x1B, 0x77, 0x30 };
-            await memoryStream.WriteAsync(printDoubleWidthData, 0, printDoubleWidthData.Length, cancellationToken); //b0 (Print double-width characters)
-            await memoryStream.WriteAsync(printDoubleHeightData, 0, printDoubleHeightData.Length, cancellationToken); //w0 (Print double-height characters)
+            //Text Double width
+            var printDoubleWidthData = new byte[] { 0x1B, 0x62 }; //b0
+            await memoryStream.WriteAsync(printDoubleWidthData, 0, printDoubleWidthData.Length, cancellationToken);
+
+            if (this._textDoubleWidth)
+            {
+                memoryStream.WriteByte(0x31);
+            }
+            else
+            {
+                memoryStream.WriteByte(0x30);
+            }
+
+            //Text Double height
+            var printDoubleHeightData = new byte[] { 0x1B, 0x77 }; //w0
+            await memoryStream.WriteAsync(printDoubleHeightData, 0, printDoubleHeightData.Length, cancellationToken);
+
+            if (this._textDoubleHeight)
+            {
+                memoryStream.WriteByte(0x31);
+            }
+            else
+            {
+                memoryStream.WriteByte(0x30);
+            }
 
             //Position
             var xPositionCommandData = new byte[] { 0x1B, 0x25, 0x78 }; //%x

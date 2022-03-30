@@ -82,7 +82,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.UnitTest
         public async Task SendEraseAreaAsyncTest()
         {
             await this._printerClient.FeedCardFromHopperAsync();
-            await this._printerClient.SendEraseAreaAsync();
+            await this._printerClient.EraseAreaAsync();
             await this._printerClient.EjectCardAsync();
         }
 
@@ -93,7 +93,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.UnitTest
             printDocument.AddElement(new TextPrintElement("Position X25", 25, 650));
 
             await this._printerClient.FeedCardFromHopperAsync();
-            await this._printerClient.SendPrintDemoCardAsync(printDocument);
+            await this._printerClient.PrintDocumentAsync(printDocument);
             await this._printerClient.EjectCardAsync();
         }
 

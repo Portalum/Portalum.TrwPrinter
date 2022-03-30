@@ -262,7 +262,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             };
         }
 
-        public async Task SendEraseAreaAsync(CancellationToken cancellationToken = default)
+        public async Task EraseAreaAsync(CancellationToken cancellationToken = default)
         {
             var startX = 0;
             var endX = 96;
@@ -280,7 +280,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             await this._deviceCommunication.SendAsync(startPrintData, cancellationToken);
         }
 
-        public async Task SendPrintDemoCardAsync(
+        public async Task PrintDocumentAsync(
             PrintDocument printDocument,
             CancellationToken cancellationToken = default)
         {
@@ -335,12 +335,5 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var commandData = new byte[] { 0x1B, 0x24, 0x44, 0x30 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
         }
-
-        //public async Task GetStatusAsync(CancellationToken cancellationToken = default)
-        //{
-        //    //var commandData = new byte[] { 0x1A };
-        //    var commandData = new byte[] { 0x1B, 0x3F };
-        //    await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-        //}
     }
 }

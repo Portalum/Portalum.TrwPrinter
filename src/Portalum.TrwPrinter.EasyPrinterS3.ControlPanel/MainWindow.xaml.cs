@@ -221,7 +221,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             var printDocument = new PrintDocument();
             printDocument.AddElement(new ImagePrintElement(filePath, 200));
 
-            await this._printerClient.SendPrintDemoCardAsync(printDocument);
+            await this._printerClient.PrintDocumentAsync(printDocument);
         }
 
         private async void ButtonPrintTextDemo_Click(object sender, RoutedEventArgs e)
@@ -243,7 +243,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             printDocument.AddElement(new TextPrintElement("Position X75", 75, 650));
             printDocument.AddElement(new TextPrintElement("Position X85", 85, 650));
 
-            await this._printerClient.SendPrintDemoCardAsync(printDocument);
+            await this._printerClient.PrintDocumentAsync(printDocument);
         }
 
         private async void ButtonPrintFullDemo_Click(object sender, RoutedEventArgs e)
@@ -268,7 +268,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             printDocument.AddElement(new TextPrintElement("Langestraße 4a", 42, 650, TextSize.Medium));
             printDocument.AddElement(new TextPrintElement("10115 Berlin", 49, 650, TextSize.Medium));
 
-            await this._printerClient.SendPrintDemoCardAsync(printDocument);
+            await this._printerClient.PrintDocumentAsync(printDocument);
         }
 
         private async void ButtonLoadCardFromFront_Click(object sender, RoutedEventArgs e)
@@ -288,7 +288,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 return;
             }
 
-            await this._printerClient.SendEraseAreaAsync();
+            await this._printerClient.EraseAreaAsync();
         }
 
         private async void ButtonReadUid_Click(object sender, RoutedEventArgs e)
