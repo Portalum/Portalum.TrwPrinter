@@ -173,6 +173,12 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             return new PrinterState(byteBitInfo);
         }
 
+        public async Task RebootAsync(CancellationToken cancellationToken = default)
+        {
+            var commandData = new byte[] { 0x1B, 0x24, 0x52 };
+            await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+        }
+
         public async Task<string> GetFirmwareAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x61 };
