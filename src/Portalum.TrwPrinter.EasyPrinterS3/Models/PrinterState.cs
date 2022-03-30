@@ -1,6 +1,6 @@
 ﻿namespace Portalum.TrwPrinter.EasyPrinterS3.Models
 {
-    public class PrinterState
+    public struct PrinterState
     {
         public bool CardSensorPrintPosition { get; set; }
         public bool CardSensorFront { get; set; }
@@ -14,7 +14,17 @@
         public bool CardInPeripherialUnitPosition { get; set; }
         public bool Error { get; set; }
 
-        public PrinterState() { }
+        public PrinterState()
+        {
+            this.CardSensorPrintPosition = false;
+            this.CardSensorFront = false;
+            this.CardSensorBack = false;
+            this.CardInPrintPosition = false;
+            this.PrintingInProgress = false;
+            this.CardHasBeenPrinted = false;
+            this.CardInPeripherialUnitPosition = false;
+            this.Error = false;
+        }
 
         public PrinterState(ByteBitInfo byteBitInfo)
         {

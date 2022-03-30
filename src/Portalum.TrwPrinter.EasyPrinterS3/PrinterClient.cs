@@ -61,8 +61,11 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                         continue;
                     }
 
-                    this._printerState = state;
-                    this.PrinterStateChanged?.Invoke(state);
+                    if (this._printerState.Equals(state.Value))
+                    {
+                        this._printerState = state.Value;
+                        this.PrinterStateChanged?.Invoke(state.Value);
+                    }
 
                     await Task.Delay(100, this._disposeCancellationTokenSource.Token);
                 }
@@ -157,7 +160,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             await this._deviceCommunication.DisconnectAsync();
         }
 
-        public async Task<PrinterState> GetShortStateAsync(CancellationToken cancellationToken = default)
+        public async Task<PrinterState?> GetShortStateAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1A };
             var receivedData = await this.SendAndReceiveAsync(commandData, cancellationToken);
