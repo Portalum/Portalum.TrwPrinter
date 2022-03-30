@@ -76,6 +76,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.Helpers
                     if (j != 0)
                     {
                         buffer[bufferIndex] = (byte)colorBits;
+                        bufferIndex++;
                     }
                 }
             });
