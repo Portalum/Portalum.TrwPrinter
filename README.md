@@ -2,9 +2,9 @@
 
 <img src="https://raw.githubusercontent.com/Portalum/Portalum.TrwPrinter/main/doc/logo.png" width="150" title="Portalum TrwPrinter Client" alt="Portalum TrwPrinter Client" align="left">
 
-<br>
-<br>
-<br>
+Thermo-rewrite technology allows plastic cards to be printed and erased multiple times.<br>
+This means that the plastic cards can be reused, which produces less waste. No ink ribbon is needed either.
+This technology is used, for example, for visitor badges, employee ID cards, student ID cards, ...
 <br>
 <br>
 <br>
