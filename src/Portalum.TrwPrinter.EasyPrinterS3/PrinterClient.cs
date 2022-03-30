@@ -61,7 +61,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                         continue;
                     }
 
-                    if (this._printerState.Equals(state.Value))
+                    if (!this._printerState.Equals(state.Value))
                     {
                         this._printerState = state.Value;
                         this.PrinterStateChanged?.Invoke(state.Value);
