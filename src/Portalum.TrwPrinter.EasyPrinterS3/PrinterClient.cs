@@ -227,6 +227,13 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var receivedData = await this.SendAndReceiveAsync(commandData, cancellationToken);
         }
 
+        public async Task<string> ReadCardDirectionAsync(CancellationToken cancellationToken = default)
+        {
+            var commandData = new byte[] { 0x1B, 0x23 };
+            var receivedData = await this.SendAndReceiveAsync(commandData, cancellationToken);
+            return Encoding.ASCII.GetString(receivedData);
+        }
+
         public async Task<RfidInfo> ReadCardMifareUidAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x24, 0x24, 0x55 };
