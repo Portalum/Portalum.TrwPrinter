@@ -18,7 +18,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
 
         private byte[] _dataBuffer;
-        private bool _printerStateInitialized;
+        private bool _firePrinterStateChanged;
         private PrinterState _printerState;
 
         public PrinterState PrinterState => this._printerState;
@@ -43,7 +43,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             this._deviceCommunication = deviceCommunication;
 
             this._printerState = new PrinterState();
-            this._printerStateInitialized = false;
+            this._firePrinterStateChanged = true;
 
             this._disposeCancellationTokenSource = new CancellationTokenSource();
 
@@ -53,6 +53,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                 {
                     if (!this._deviceCommunication.IsConnected)
                     {
+                        this._firePrinterStateChanged = true;
+
                         await Task.Delay(100, this._disposeCancellationTokenSource.Token);
                         continue;
                     }
@@ -64,9 +66,9 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                         continue;
                     }
 
-                    if (!this._printerState.Equals(state.Value) || !this._printerStateInitialized)
+                    if (!this._printerState.Equals(state.Value) || this._firePrinterStateChanged)
                     {
-                        this._printerStateInitialized = true;
+                        this._firePrinterStateChanged = false;
                         this._printerState = state.Value;
                         this.PrinterStateChanged?.Invoke(state.Value);
                     }
