@@ -7,13 +7,16 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
     {
         private readonly string _imagePath;
         private readonly int _positionY;
+        private readonly bool _rotate90Degree;
 
         public ImagePrintElement(
             string imagePath,
-            int positionY = 0)
+            int positionY = 0,
+            bool rotate90Degree = false)
         {
             this._imagePath = imagePath;
             this._positionY = positionY;
+            this._rotate90Degree = rotate90Degree;
         }
 
         public override async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
@@ -28,7 +31,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imageData = File.ReadAllBytes(this._imagePath);
 #endif
 
-            var imagePrintPackage = ImageHelper.GetImagePrintPackage(imageData);
+            var imagePrintPackage = ImageHelper.GetImagePrintPackage(imageData, this._rotate90Degree);
 
             var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
             var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");

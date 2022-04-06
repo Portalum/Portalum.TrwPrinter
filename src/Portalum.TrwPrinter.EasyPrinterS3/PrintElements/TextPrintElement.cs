@@ -34,10 +34,6 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
         {
             using var memoryStream = new MemoryStream();
 
-            //TODO: This is more a print document config
-            var rotateWholeCardData = new byte[] { 0x1B, 0x55 };
-            await memoryStream.WriteAsync(rotateWholeCardData, 0, rotateWholeCardData.Length, cancellationToken); //U (Rotates whole card (text and graphic) by 180°)
-
             //Orientation
             if (this._textOrientation == TextOrientation.Normal)
             {

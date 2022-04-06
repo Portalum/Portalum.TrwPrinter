@@ -12,7 +12,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.UnitTest
         public async Task SetDisplayTextAsyncTest()
         {
             var imageData = File.ReadAllBytes(@"../../../../../doc/2bit307x326.png");
-            var test = ImageHelper.GetImagePrintPackage(imageData);
+            var test = ImageHelper.GetImagePrintPackage(imageData, false);
         }
     }
 }

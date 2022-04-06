@@ -10,7 +10,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.Helpers
 {
     public static class ImageHelper
     {
-        public static ImagePrintPackage GetImagePrintPackage(byte[] imageData)
+        public static ImagePrintPackage GetImagePrintPackage(byte[] imageData, bool rotate90degree)
         {
             using var image = Image.Load<Rgba32>(imageData);
 
@@ -28,15 +28,18 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.Helpers
             //FloydSteinberg->Good
             //Stucki->Good
 
+            if (rotate90degree)
+            {
+                image.Mutate(x => x.Rotate(90));
+            }
+
             var averageLuminance = CalculateAverageLuminance(imageData);
             if (averageLuminance < 125)
             {
-                image.Mutate(x => x.Rotate(90).Brightness(1.5f).BinaryDither(KnownDitherings.Atkinson));
+                image.Mutate(x => x.Brightness(1.5f));
             }
-            else
-            {
-                image.Mutate(x => x.Rotate(90).BinaryDither(KnownDitherings.Atkinson));
-            }
+
+            image.Mutate(x => x.BinaryDither(KnownDitherings.Atkinson));
 
             var requiredBytesPerRow = (int)Math.Ceiling(image.Width / 8.0);
 

@@ -6,9 +6,12 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
     public class PrintDocument
     {
         private readonly List<PrintElementBase> _printElements;
+        private readonly bool _rotate180Degree;
 
-        public PrintDocument()
+        public PrintDocument(bool rotate180Degree = true)
         {
+            this._rotate180Degree = rotate180Degree;
+
             this._printElements = new List<PrintElementBase>();
         }
 
@@ -25,6 +28,13 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var endY = 1100;
 
             using var memoryStream = new MemoryStream();
+
+            if (this._rotate180Degree)
+            {
+                //U (Rotates whole card (text and graphic) by 180°)
+                var rotateWholeCardData = new byte[] { 0x1B, 0x55 };
+                await memoryStream.WriteAsync(rotateWholeCardData, 0, rotateWholeCardData.Length, cancellationToken);
+            }
 
             //Limit print area
             var limitPrintAreaCommandData = new byte[] { 0x1B, 0x25, 0x64 }; //%d
