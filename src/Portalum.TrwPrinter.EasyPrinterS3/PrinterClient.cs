@@ -17,7 +17,6 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private readonly CancellationTokenSource _disposeCancellationTokenSource;
         private readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
 
-        private byte[] _dataBuffer;
         private bool _firePrinterStateChanged;
         private PrinterState _printerState;
 
@@ -95,14 +94,6 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             {
                 this._disposeCancellationTokenSource.Cancel();
             }
-        }
-
-        private void DataReceived(byte[] data)
-        {
-            var dataHex = BitConverter.ToString(data);
-            this._logger.LogInformation($"{nameof(DataReceived)} - {dataHex}");
-
-            this._dataBuffer = data;
         }
 
         private async Task<byte[]> SendAndReceiveAsync(
