@@ -93,6 +93,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             if (disposing)
             {
                 this._disposeCancellationTokenSource.Cancel();
+                this._semaphoreSlim.Dispose();
             }
         }
 
