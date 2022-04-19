@@ -129,7 +129,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
             this.PreparePrinterClient(this.TextBoxIpAddress.Text);
 
-            using var cancellationTokenSource = new CancellationTokenSource(1000);
+            using var cancellationTokenSource = new CancellationTokenSource(16000); //The new firmware needs min. 15 seconds to allow reconnection.
             if (!await this._printerClient.ConnectAsync(cancellationTokenSource.Token))
             {
                 this.LabelInfo.Content = "Cannot connect";
