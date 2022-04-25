@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Portalum.TrwPrinter.EasyPrinterS3.Helpers;
 using Portalum.TrwPrinter.EasyPrinterS3.Models;
+using System.Globalization;
 using System.Text;
 
 namespace Portalum.TrwPrinter.EasyPrinterS3
@@ -241,7 +242,15 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             {
                 if (receivedData[0] == 0x53 && receivedData.Last() == 0x0D)
                 {
-                    var uid = Encoding.ASCII.GetString(receivedData.Skip(2).ToArray()).TrimEnd();
+                    var uidTemp = Encoding.ASCII.GetString(receivedData.Skip(2).ToArray()).TrimEnd();
+                    if (!ulong.TryParse(uidTemp, NumberStyles.HexNumber, null, out var uid))
+                    {
+                        return new RfidInfo
+                        {
+                            Successful = false,
+                            ErrorMessage = "Hex parse error"
+                        };
+                    }
 
                     return new RfidInfo
                     {
