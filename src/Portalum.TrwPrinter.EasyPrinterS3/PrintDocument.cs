@@ -10,13 +10,15 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
 
         /*
          *  Coordinate System for print card
+         *  The physical printer has a twisted coordinate system
          *  
-         *   ┌──────────────────────┐
-         *   │                      │
-         * Y │                      │
-         * │ │                      │
-         * │ └──────────────────────┘
-         * └──── X
+         * Y70 ┌──────────────────────┐
+         *     │                      │
+         *     │                      │
+         *     │                      │
+         *  Y0 └──────────────────────┘
+         *     X0                  X960
+         * 
         */
 
         public PrintDocument(bool rotate180Degree = true)
