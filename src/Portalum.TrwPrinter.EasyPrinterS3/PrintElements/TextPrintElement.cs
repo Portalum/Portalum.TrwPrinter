@@ -91,9 +91,9 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
 
             //Position
             var xPositionCommandData = new byte[] { 0x1B, 0x25, 0x78 }; //%x
-            var xPositionData = Encoding.ASCII.GetBytes($"{this._positionX:D2}");
+            var xPositionData = Encoding.ASCII.GetBytes($"{this._positionY:D2}");
             var yPositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var yPositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+            var yPositionData = Encoding.ASCII.GetBytes($"{this._positionX:D4}");
 
             await memoryStream.WriteAsync(xPositionCommandData, 0, xPositionCommandData.Length, cancellationToken);
             await memoryStream.WriteAsync(xPositionData, 0, xPositionData.Length, cancellationToken);
