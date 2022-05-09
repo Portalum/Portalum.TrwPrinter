@@ -7,16 +7,16 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
     {
         private readonly int _width;
         private readonly int _height;
-        private readonly int _positionY;
+        private readonly int _positionX;
 
         public RectanglePrintElement(
             int width = 8,
             int height = 8,
-            int positionY = 0)
+            int positionX = 0)
         {
             this._width = width;
             this._height = height;
-            this._positionY = positionY;
+            this._positionX = positionX;
         }
 
         public override async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
@@ -28,7 +28,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imageRowInfoData = new byte[] { 0x1B, 0x51, (byte)(fullLineData.Length + paddingByteCount) };
 
             var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+            var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionX:D4}");
 
             using var memoryStream = new MemoryStream();
 
