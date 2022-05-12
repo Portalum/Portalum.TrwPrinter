@@ -8,6 +8,19 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private readonly List<PrintElementBase> _printElements;
         private readonly bool _rotate180Degree;
 
+        /*
+         *  Coordinate System for print card
+         *  The physical printer has a twisted coordinate system
+         *  
+         * Y70 ┌──────────────────────┐
+         *     │                      │
+         *     │                      │
+         *     │                      │
+         *  Y0 └──────────────────────┘
+         *     X0                  X960
+         * 
+        */
+
         public PrintDocument(bool rotate180Degree = true)
         {
             this._rotate180Degree = rotate180Degree;
@@ -24,10 +37,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             PrintPositionInfo printPositionInfo,
             CancellationToken cancellationToken = default)
         {
-            var startX = 0;
-            var endX = 96;
-            var startY = 100;
-            var endY = 1100;
+            var startY = 0;
+            var endY = 96;
+            var startX = 100;
+            var endX = 1100;
 
             using var memoryStream = new MemoryStream();
 
@@ -42,14 +55,14 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var limitPrintAreaCommandData = new byte[] { 0x1B, 0x25, 0x64 }; //%d
             await memoryStream.WriteAsync(limitPrintAreaCommandData, 0, limitPrintAreaCommandData.Length, cancellationToken);
 
-            var limitPrintAreaPositionData = Encoding.ASCII.GetBytes($"{startY:D4}{endY:D4}");
+            var limitPrintAreaPositionData = Encoding.ASCII.GetBytes($"{startX:D4}{endX:D4}");
             await memoryStream.WriteAsync(limitPrintAreaPositionData, 0, limitPrintAreaPositionData.Length, cancellationToken);
 
             //Set erase area mode
             var setEraseAreaModeCommandData = new byte[] { 0x1B, 0x4C, 0x31 }; //L1
             await memoryStream.WriteAsync(setEraseAreaModeCommandData, 0, setEraseAreaModeCommandData.Length, cancellationToken);
 
-            var setEraseAreaModePositionData = Encoding.ASCII.GetBytes($"{startX:D2}{startY:D4}{endX:D2}{endY:D4}");
+            var setEraseAreaModePositionData = Encoding.ASCII.GetBytes($"{startY:D2}{startX:D4}{endY:D2}{endX:D4}");
             await memoryStream.WriteAsync(setEraseAreaModePositionData, 0, setEraseAreaModePositionData.Length, cancellationToken);
 
             foreach (var printElement in this._printElements)

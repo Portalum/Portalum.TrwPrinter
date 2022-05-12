@@ -1,4 +1,4 @@
-﻿using Portalum.TrwPrinter.EasyPrinterS3.Helpers;
+using Portalum.TrwPrinter.EasyPrinterS3.Helpers;
 using System.Text;
 
 namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
