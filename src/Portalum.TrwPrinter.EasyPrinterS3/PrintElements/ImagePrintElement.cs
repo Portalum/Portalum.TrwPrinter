@@ -6,16 +6,28 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
     public class ImagePrintElement : PrintElementBase
     {
         private readonly string _imagePath;
-        private readonly int _positionY;
+        // neu: 2022-10-12
+        // private readonly int _positionY;
+        private readonly int _positionX1;
+        private readonly int _positionY1;
+        private readonly int _positionX2;
+        private readonly int _positionY2;
+
         private readonly bool _rotate90Degree;
 
         public ImagePrintElement(
             string imagePath,
-            int positionY = 0,
+            int positionX1 = 0,
+            int positionY1 = 0,
+            int positionX2 = 0,
+            int positionY2 = 0,
             bool rotate90Degree = false)
         {
             this._imagePath = imagePath;
-            this._positionY = positionY;
+            this._positionX1 = positionX1;
+            this._positionY1 = positionY1;
+            this._positionX2 = positionX2;
+            this._positionY2 = positionY2;
             this._rotate90Degree = rotate90Degree;
         }
 
@@ -34,7 +46,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imagePrintPackage = ImageHelper.GetImagePrintPackage(imageData, this._rotate90Degree);
 
             var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var imagePositionData = Encoding.ASCII.GetBytes($"{this._positionY:D4}");
+
+            // muss noch um PosX1 ... usw ergänzt werden
+            //var imagePositionData = Encoding.ASCII.GetBytes($"{this.GetPrinterPositionX(this._positionY):D4}");
+            var imagePositionData = Encoding.ASCII.GetBytes($"{this.ConvertX(this._positionX1):D4}");
 
             using var memoryStream = new MemoryStream();
 

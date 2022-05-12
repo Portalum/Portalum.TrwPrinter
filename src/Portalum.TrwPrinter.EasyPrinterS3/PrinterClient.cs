@@ -21,6 +21,9 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private bool _firePrinterStateChanged;
         private PrinterState _printerState;
 
+        private int _offsetX = 19;
+        private bool _fromFront = false;
+
         public PrinterState PrinterState => this._printerState;
 
         public event Action<PrinterState> PrinterStateChanged;
@@ -76,6 +79,14 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                     await Task.Delay(100, this._disposeCancellationTokenSource.Token);
                 }
             }, this._disposeCancellationTokenSource.Token);
+        }
+
+        /// <summary>
+        /// OffsetX for Printing from Front or from Hopper
+        /// </summary>
+        public int OffsetX { 
+            get => this._offsetX;
+            set => this._offsetX = value; 
         }
 
         /// <inheritdoc />
@@ -202,18 +213,21 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         {
             var commandData = new byte[] { 0x1B, 0x31 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+            this._fromFront = true;
         }
 
         public async Task FeedCardFromHopperAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x63 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+            this._fromFront = false;
         }
 
         public async Task AbortFeedAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x32 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
+            this._fromFront = false;
         }
 
         public async Task ReadCardUidAsync(CancellationToken cancellationToken = default)
@@ -298,7 +312,9 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             PrintDocument printDocument,
             CancellationToken cancellationToken = default)
         {
-            var printData = await printDocument.GetPrintDataAsync();
+            int myOffsetX = 0;
+            if (!this._fromFront) myOffsetX = this._offsetX;
+            var printData = await printDocument.GetPrintDataAsync(new PrintPositionInfo { OffsetX = myOffsetX });
             await this._deviceCommunication.SendAsync(printData, cancellationToken);
         }
 
