@@ -60,9 +60,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
         private void PreparePrinterClient(string ipAddress)
         {
             var loggerDeviceCommunication = this._loggerFactory.CreateLogger<TcpNetworkDeviceCommunication>();
+            var loggerPrinterClient = this._loggerFactory.CreateLogger<PrinterClient>();
 
             this._deviceCommunication = new TcpNetworkDeviceCommunication(ipAddress, 50020, logger: loggerDeviceCommunication);
-            this._printerClient = new PrinterClient(this._deviceCommunication);
+            this._printerClient = new PrinterClient(this._deviceCommunication, loggerPrinterClient);
             this._printerClient.PrinterStateChanged += this.PrinterStateChanged;
         }
 
@@ -231,7 +232,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 return;
             }
 
-            var printDocument = new PrintDocument();
+            var printDocument = new PrintDocument(rotate180Degree: false);
             printDocument.AddElement(new TextPrintElement("X0/Y0", 0, 0));
             printDocument.AddElement(new TextPrintElement("X15/Y0", 15, 0));
             printDocument.AddElement(new TextPrintElement("X17/Y0", 17, 0));

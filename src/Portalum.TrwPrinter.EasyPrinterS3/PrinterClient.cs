@@ -45,6 +45,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             this._logger = logger;
             this._deviceCommunication = deviceCommunication;
 
+            this._logger.LogInformation("Initialize PrinterClient");
+
             this._printerState = new PrinterState();
             this._firePrinterStateChanged = true;
 
@@ -65,6 +67,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
                     var state = await this.GetShortStateAsync();
                     if (state == null)
                     {
+                        this._logger.LogDebug("Short state is not available, wait");
                         await Task.Delay(100, this._disposeCancellationTokenSource.Token);
                         continue;
                     }
