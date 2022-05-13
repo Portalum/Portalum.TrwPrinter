@@ -25,7 +25,7 @@
         {
             if (posX < 0) { posX = 0; }
             if (posX > 960) { posX = 960; }
-            posX = Math.Abs(posX - 960) + 130 + this._printPositionInfo.OffsetX;
+            posX = Math.Abs(posX - 960) + 130 - this._printPositionInfo.OffsetX;
             return posX;
         }
 

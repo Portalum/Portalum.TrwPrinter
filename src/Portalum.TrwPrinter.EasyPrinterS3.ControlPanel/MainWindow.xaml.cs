@@ -232,16 +232,20 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             }
 
             var printDocument = new PrintDocument();
-            printDocument.AddElement(new TextPrintElement("Position X13", 13, 650));
-            printDocument.AddElement(new TextPrintElement("Position X15", 15, 650));
-            printDocument.AddElement(new TextPrintElement("Position X17", 17, 650));
-            printDocument.AddElement(new TextPrintElement("Position X20", 20, 650));
-            printDocument.AddElement(new TextPrintElement("Position X25 (Large)", 25, 650, TextSize.Large));
-            printDocument.AddElement(new TextPrintElement("Position X50 (Small)", 50, 950, TextSize.Small));
-            printDocument.AddElement(new TextPrintElement("Position X55", 55, 950));
-            printDocument.AddElement(new TextPrintElement("Position X65", 65, 650));
-            printDocument.AddElement(new TextPrintElement("Position X75", 75, 650));
-            printDocument.AddElement(new TextPrintElement("Position X85", 85, 650));
+            printDocument.AddElement(new TextPrintElement("X0/Y0", 0, 0));
+            printDocument.AddElement(new TextPrintElement("X15/Y0", 15, 0));
+            printDocument.AddElement(new TextPrintElement("X17/Y0", 17, 0));
+            printDocument.AddElement(new TextPrintElement("X20/Y0", 20, 0));
+            printDocument.AddElement(new TextPrintElement("X25/Y0 (Large)", 25, 0, TextSize.Large));
+            printDocument.AddElement(new TextPrintElement("X50/Y10 (Small)", 50, 10, TextSize.Small));
+            printDocument.AddElement(new TextPrintElement("X55/Y20", 55, 20));
+            printDocument.AddElement(new TextPrintElement("X200/Y30", 200, 30));
+            printDocument.AddElement(new TextPrintElement("X300/Y0", 300, 0));
+            printDocument.AddElement(new TextPrintElement("X300/Y40", 300, 40));
+            printDocument.AddElement(new TextPrintElement("X300/Y70", 300, 70));
+            printDocument.AddElement(new TextPrintElement("X400/Y50", 400, 50));
+            printDocument.AddElement(new TextPrintElement("X800/Y0", 800, 0));
+            printDocument.AddElement(new TextPrintElement("X800/Y50", 800, 50));
 
             await this._printerClient.PrintDocumentAsync(printDocument);
         }

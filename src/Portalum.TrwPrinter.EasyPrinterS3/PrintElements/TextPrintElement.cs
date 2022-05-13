@@ -90,10 +90,13 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             }
 
             //Position
+            var convertedPositionX = this.ConvertX(this._positionX);
+            var convertedPositionY = this.ConvertY(this._positionY);
+
             var xPositionCommandData = new byte[] { 0x1B, 0x25, 0x78 }; //%x
-            var xPositionData = Encoding.ASCII.GetBytes($"{this.ConvertX(this._positionX):D2}");
+            var xPositionData = Encoding.ASCII.GetBytes($"{convertedPositionY:D2}");
             var yPositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
-            var yPositionData = Encoding.ASCII.GetBytes($"{this.ConvertY(this._positionY):D4}");
+            var yPositionData = Encoding.ASCII.GetBytes($"{convertedPositionX:D4}");
 
             await memoryStream.WriteAsync(xPositionCommandData, 0, xPositionCommandData.Length, cancellationToken);
             await memoryStream.WriteAsync(xPositionData, 0, xPositionData.Length, cancellationToken);
