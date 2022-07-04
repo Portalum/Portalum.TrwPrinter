@@ -1,41 +1,41 @@
 using Portalum.TrwPrinter.EasyPrinterS3.Helpers;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 using System.Text;
 
 namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
 {
     public class ImagePrintElement : PrintElementBase
     {
-        private readonly string _imagePath;
-        // neu: 2022-10-12
-        // private readonly int _positionY;
-        private readonly int _positionX1;
-        private readonly int _positionY1;
-        private readonly int _positionX2;
-        private readonly int _positionY2;
+        private readonly int _pixelMultiplier = 8;
+        private readonly int _paddingByteCount = 13;
 
-        private readonly bool _rotate90Degree;
+        private readonly string _imagePath;
+        private readonly double _positionX1;
+        private readonly double _positionX2;
+        private readonly double _positionY1;
+        private readonly double _positionY2;
 
         public ImagePrintElement(
             string imagePath,
-            int positionX1 = 0,
-            int positionY1 = 0,
-            int positionX2 = 0,
-            int positionY2 = 0,
-            bool rotate90Degree = false)
+            double positionX1,
+            double positionX2,
+            double positionY1,
+            double positionY2)
         {
             this._imagePath = imagePath;
             this._positionX1 = positionX1;
-            this._positionY1 = positionY1;
             this._positionX2 = positionX2;
+            this._positionY1 = positionY1;
             this._positionY2 = positionY2;
-            this._rotate90Degree = rotate90Degree;
         }
 
-        public override async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
+        private async Task<byte[]> PreparePrintImageAsync(CancellationToken cancellationToken = default)
         {
-            var paddingByteCount = 13;
-            var paddingData = Enumerable.Repeat((byte)0x00, paddingByteCount).ToArray();
-            var imagePrintCommand = new byte[] { 0x1B, 0x51 };
+            var width = (this._positionX2 - this._positionX1);
+            var height = (this._positionY2 - this._positionY1) * this._pixelMultiplier;
+            var offsetY = (this._maxHeight - this._positionY2) * this._pixelMultiplier;
 
 #if (NET6_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER)
             var imageData = await File.ReadAllBytesAsync(this._imagePath, cancellationToken);
@@ -43,13 +43,39 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imageData = File.ReadAllBytes(this._imagePath);
 #endif
 
-            var imagePrintPackage = ImageHelper.GetImagePrintPackage(imageData, this._rotate90Degree);
+            using var image = Image.Load<Rgba32>(imageData);
+            image.Mutate(x => x.Resize((int)width, (int)height, false));
 
-            var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 }; //%y
+            using var printImage = new Image<Rgba32>((int)width, (int)(height + offsetY));
 
-            // muss noch um PosX1 ... usw ergänzt werden
-            //var imagePositionData = Encoding.ASCII.GetBytes($"{this.GetPrinterPositionX(this._positionY):D4}");
-            var imagePositionData = Encoding.ASCII.GetBytes($"{this.ConvertX(this._positionX1):D4}");
+            printImage.Mutate(o => o
+                .BackgroundColor(Color.White)
+                .DrawImage(image, new Point(0, (int)offsetY), 1f)
+                .Rotate(90)
+            );
+
+            using var memoryStreamPrintImage = new MemoryStream();
+            await printImage.SaveAsPngAsync(memoryStreamPrintImage);
+            printImage.SaveAsPng("test.png");
+
+            return memoryStreamPrintImage.ToArray();
+        }
+
+        public override async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
+        {
+            var paddingData = Enumerable.Repeat((byte)0x00, this._paddingByteCount).ToArray();
+            var imagePrintCommand = new byte[] { 0x1B, 0x51 };
+
+            var imagePositionCommandData = new byte[] { 0x1B, 0x25, 0x79 };
+            //var offsetX = 1000 - this._positionX2;
+            //var offsetX = 130;
+            //var offsetX = (int)this._positionX2 - 200;// - this._startingPointOfPrintingAreaX;
+            //var imagePositionData = Encoding.ASCII.GetBytes($"{(int)offsetX:D4}");
+            var imagePositionData = Encoding.ASCII.GetBytes($"{this.ConvertX((int)this._positionX2):D4}");
+
+            var printData = await this.PreparePrintImageAsync(cancellationToken);
+
+            var imagePrintPackage = ImageHelper.GetImagePrintPackage(printData);
 
             using var memoryStream = new MemoryStream();
 
@@ -60,7 +86,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             {
                 await memoryStream.WriteAsync(imagePrintCommand, 0, imagePrintCommand.Length, cancellationToken);
 
-                var lengthInfoData = new byte[] { (byte)(imagePrintPackage.BytesPerRow + paddingByteCount) };
+                var lengthInfoData = new byte[] { (byte)(imagePrintPackage.BytesPerRow + this._paddingByteCount) };
                 await memoryStream.WriteAsync(lengthInfoData, 0, lengthInfoData.Length, cancellationToken);
 
                 await memoryStream.WriteAsync(paddingData, 0, paddingData.Length, cancellationToken);

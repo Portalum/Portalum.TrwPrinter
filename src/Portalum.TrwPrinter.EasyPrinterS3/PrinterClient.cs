@@ -21,8 +21,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         private bool _firePrinterStateChanged;
         private PrinterState _printerState;
 
-        private int _offsetX = 19;
-        private bool _fromFront = false;
+        private int _printOffsetFeedCardFromHopperX = -18;
+        private bool _feedCardFromHopper = false;
 
         public PrinterState PrinterState => this._printerState;
 
@@ -88,8 +88,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         /// OffsetX for Printing from Front or from Hopper
         /// </summary>
         public int OffsetX { 
-            get => this._offsetX;
-            set => this._offsetX = value; 
+            get => this._printOffsetFeedCardFromHopperX;
+            set => this._printOffsetFeedCardFromHopperX = value; 
         }
 
         /// <inheritdoc />
@@ -216,21 +216,21 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
         {
             var commandData = new byte[] { 0x1B, 0x31 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-            this._fromFront = true;
+            this._feedCardFromHopper = false;
         }
 
         public async Task FeedCardFromHopperAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x63 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-            this._fromFront = false;
+            this._feedCardFromHopper = true;
         }
 
         public async Task AbortFeedAsync(CancellationToken cancellationToken = default)
         {
             var commandData = new byte[] { 0x1B, 0x32 };
             await this._deviceCommunication.SendAsync(commandData, cancellationToken);
-            this._fromFront = false;
+            this._feedCardFromHopper = false;
         }
 
         public async Task ReadCardUidAsync(CancellationToken cancellationToken = default)
@@ -248,6 +248,29 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             var commandData = new byte[] { 0x1B, 0x23 };
             var receivedData = await this.SendAndReceiveAsync(commandData, cancellationToken);
             return Encoding.ASCII.GetString(receivedData);
+        }
+
+        public async Task MoveCardViaMicrostepsAsync(
+            ushort microsteps,
+            CancellationToken cancellationToken = default)
+        {
+            using var memoryStream = new MemoryStream();
+
+            if (microsteps > 0)
+            {
+                var moveCommand = new byte[] { 0x1B, 0x6A };
+                await memoryStream.WriteAsync(moveCommand, 0, moveCommand.Length, cancellationToken);
+            }
+            else
+            {
+                var moveCommand = new byte[] { 0x1B, 0x6B };
+                await memoryStream.WriteAsync(moveCommand, 0, moveCommand.Length, cancellationToken);
+            }
+
+            var microstepsData = BitConverter.GetBytes(microsteps).Reverse().ToArray();
+            await memoryStream.WriteAsync(microstepsData, 0, microstepsData.Length, cancellationToken);
+
+            _ = await this.SendAndReceiveAsync(memoryStream.ToArray(), cancellationToken);
         }
 
         public async Task<RfidInfo> ReadCardMifareUidAsync(CancellationToken cancellationToken = default)
@@ -315,9 +338,16 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             PrintDocument printDocument,
             CancellationToken cancellationToken = default)
         {
-            int myOffsetX = 0;
-            if (!this._fromFront) myOffsetX = this._offsetX;
-            var printData = await printDocument.GetPrintDataAsync(new PrintPositionInfo { OffsetX = myOffsetX });
+            if (this._feedCardFromHopper)
+            {
+                //Correct the offset when pulling the card from different feeds
+                await this.MoveCardViaMicrostepsAsync(62, cancellationToken);
+            }
+            else
+            {
+            }
+
+            var printData = await printDocument.GetPrintDataAsync(cancellationToken);
             await this._deviceCommunication.SendAsync(printData, cancellationToken);
         }
 

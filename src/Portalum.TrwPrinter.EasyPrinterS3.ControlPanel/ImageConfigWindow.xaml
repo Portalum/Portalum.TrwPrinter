@@ -1,0 +1,19 @@
+﻿<Window x:Class="Portalum.TrwPrinter.EasyPrinterS3.ControlPanel.ImageConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Portalum.TrwPrinter.EasyPrinterS3.ControlPanel"
+        mc:Ignorable="d"
+        Title="ImagePositionWindow"
+        Height="229"
+        Width="296"
+        Background="{StaticResource SecondaryColor}" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonFullSize" Content="Full Size 960x70" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="127" Height="30" Click="ButtonFullSize_Click"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonLeftBottom" Content="Bottom Left 200x20" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Click="ButtonLeftBottom200x20_Click" Width="127" Height="29"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonBottomRight200_20" Content="Bottom Right 200x20" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Width="127" Height="29" Click="ButtonBottomRight200x20_Click"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonHalfSize" Content="Half Size 450x35" HorizontalAlignment="Left" Margin="11,45,0,0" VerticalAlignment="Top" Width="126" Height="29" Click="ButtonHalfSize_Click"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonTopRight200_20" Content="Top Right 200x20" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="127" Height="29" Click="ButtonTopRight200_20_Click" />
+    </Grid>
+</Window>

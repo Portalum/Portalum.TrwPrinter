@@ -219,9 +219,16 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
             var filePath = openFileDialog.FileName;
 
-            var printDocument = new PrintDocument();
-            printDocument.AddElement(new ImagePrintElement(filePath, 200));
+            var imageConfigDialog = new ImageConfigWindow();
+            imageConfigDialog.Owner = this;
+            var imageConfigResult = imageConfigDialog.ShowDialog();
+            if (!imageConfigResult.HasValue || imageConfigResult == false)
+            {
+                return;
+            }
 
+            var printDocument = new PrintDocument();
+            printDocument.AddElement(new ImagePrintElement(filePath, imageConfigDialog.X1, imageConfigDialog.X2, imageConfigDialog.Y1, imageConfigDialog.Y2));
             await this._printerClient.PrintDocumentAsync(printDocument);
         }
 
@@ -232,21 +239,20 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
                 return;
             }
 
-            var printDocument = new PrintDocument(rotate180Degree: false);
-            printDocument.AddElement(new TextPrintElement("X0/Y0", 0, 0));
-            printDocument.AddElement(new TextPrintElement("X15/Y0", 15, 0));
-            printDocument.AddElement(new TextPrintElement("X17/Y0", 17, 0));
-            printDocument.AddElement(new TextPrintElement("X20/Y0", 20, 0));
-            printDocument.AddElement(new TextPrintElement("X25/Y0 (Large)", 25, 0, TextSize.Large));
-            printDocument.AddElement(new TextPrintElement("X50/Y10 (Small)", 50, 10, TextSize.Small));
-            printDocument.AddElement(new TextPrintElement("X55/Y20", 55, 20));
-            printDocument.AddElement(new TextPrintElement("X200/Y30", 200, 30));
-            printDocument.AddElement(new TextPrintElement("X300/Y0", 300, 0));
-            printDocument.AddElement(new TextPrintElement("X300/Y40", 300, 40));
-            printDocument.AddElement(new TextPrintElement("X300/Y70", 300, 70));
-            printDocument.AddElement(new TextPrintElement("X400/Y50", 400, 50));
-            printDocument.AddElement(new TextPrintElement("X800/Y0", 800, 0));
-            printDocument.AddElement(new TextPrintElement("X800/Y50", 800, 50));
+            var printDocument = new PrintDocument();
+
+            printDocument.AddElement(new TextPrintElement("X0/Y0", 0, 0, TextSize.Small));
+            printDocument.AddElement(new TextPrintElement("X0/Y65", 0, 65, TextSize.Small));
+
+            printDocument.AddElement(new TextPrintElement("X0/Y35", 0, 35, TextSize.Medium));
+            printDocument.AddElement(new TextPrintElement("X400/Y35", 400, 35, TextSize.Large));
+            printDocument.AddElement(new TextPrintElement("X800/Y35", 800, 35, TextSize.Medium));
+
+            printDocument.AddElement(new TextPrintElement("X840/Y0", 840, 0, TextSize.Small));
+            printDocument.AddElement(new TextPrintElement("X840/Y65", 840, 65, TextSize.Small));
+
+            printDocument.AddElement(new TextPrintElement("X200/Y65 Rotated90", 200, 65, TextSize.Medium, TextOrientation.Rotated90));
+            printDocument.AddElement(new TextPrintElement("X300/Y20 double", 300, 20, TextSize.Medium, TextOrientation.Normal, true, true));
 
             await this._printerClient.PrintDocumentAsync(printDocument);
         }
@@ -268,10 +274,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             var filePath = openFileDialog.FileName;
 
             var printDocument = new PrintDocument();
-            printDocument.AddElement(new ImagePrintElement(filePath, 650));
-            printDocument.AddElement(new TextPrintElement("Max Mustermann", 35, 650, TextSize.Large));
-            printDocument.AddElement(new TextPrintElement("Langestraße 4a", 42, 650, TextSize.Medium));
-            printDocument.AddElement(new TextPrintElement("10115 Berlin", 49, 650, TextSize.Medium));
+            printDocument.AddElement(new ImagePrintElement(filePath, 0, 400, 10, 60));
+            printDocument.AddElement(new TextPrintElement("Max Mustermann", 500, 40, TextSize.Large));
+            printDocument.AddElement(new TextPrintElement("Langestraße 4a", 500, 35, TextSize.Medium));
+            printDocument.AddElement(new TextPrintElement("10115 Berlin", 500, 30, TextSize.Medium));
 
             await this._printerClient.PrintDocumentAsync(printDocument);
         }

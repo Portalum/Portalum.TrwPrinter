@@ -2,39 +2,41 @@
 {
     public abstract class PrintElementBase
     {
-        protected PrintPositionInfo _printPositionInfo;
+        protected readonly int _startingPointOfPrintingAreaX = 130;
+        protected readonly int _startingPointOfPrintingAreaY = 13;
+        protected readonly int _maxWidth = 960;
+        protected readonly int _maxHeight = 70;
 
-        public void SetPrintPositionInfo(PrintPositionInfo printPositionInfo)
-        {
-            this._printPositionInfo = printPositionInfo;
-        }
-
-        /// <summary>
-        /// blabla super doku
-        /// </summary>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public abstract Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default);
-
-        protected int GetPrinterPositionX(int x)
-        {
-            return x + this._printPositionInfo.OffsetX;
-        }
 
         protected int ConvertX(int posX)
         {
-            if (posX < 0) { posX = 0; }
-            if (posX > 960) { posX = 960; }
-            posX = Math.Abs(posX - 960) + 130 - this._printPositionInfo.OffsetX;
-            return posX;
+            if (posX < 0)
+            {
+                posX = 0;
+            }
+
+            if (posX > this._maxWidth)
+            { 
+                posX = this._maxWidth;
+            }
+
+            return Math.Abs(posX - this._maxWidth) + this._startingPointOfPrintingAreaX;
         }
 
         protected int ConvertY(int posY)
         {
-            if (posY < 0) { posY = 0; }
-            if (posY > 70) { posY = 70; }
-            posY = Math.Abs(posY - 70) + 13;
-            return posY;
+            if (posY < 0)
+            { 
+                posY = 0;
+            }
+
+            if (posY > this._maxHeight)
+            {
+                posY = this._maxHeight;
+            }
+
+            return Math.Abs(posY - this._maxHeight) + this._startingPointOfPrintingAreaY;
         }
     }
 }

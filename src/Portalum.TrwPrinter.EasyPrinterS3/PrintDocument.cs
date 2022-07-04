@@ -33,14 +33,12 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
             this._printElements.Add(printElement);
         }
 
-        public async Task<byte[]> GetPrintDataAsync(
-            PrintPositionInfo printPositionInfo,
-            CancellationToken cancellationToken = default)
+        public async Task<byte[]> GetPrintDataAsync(CancellationToken cancellationToken = default)
         {
-            var startY = 0;
-            var endY = 96;
             var startX = 100;
             var endX = 1100;
+            var startY = 0;
+            var endY = 96;
 
             using var memoryStream = new MemoryStream();
 
@@ -67,7 +65,6 @@ namespace Portalum.TrwPrinter.EasyPrinterS3
 
             foreach (var printElement in this._printElements)
             {
-                printElement.SetPrintPositionInfo(printPositionInfo);
                 var elementPrintData = await printElement.GetPrintDataAsync();
                 await memoryStream.WriteAsync(elementPrintData, 0, elementPrintData.Length, cancellationToken);
             }

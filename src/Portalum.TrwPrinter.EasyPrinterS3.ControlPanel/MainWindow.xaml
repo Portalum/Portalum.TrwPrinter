@@ -20,12 +20,12 @@
     </WindowChrome.WindowChrome>
 
     <Grid>
-        <GroupBox Template="{StaticResource GroupBoxWithHeader}" x:Name="GroupBoxPrint" Header="Print" Foreground="White" Margin="0,184,0,0" HorizontalAlignment="Left" Width="310" Height="116" VerticalAlignment="Top">
+        <GroupBox Template="{StaticResource GroupBoxWithHeader}" x:Name="GroupBoxPrint" Header="Print / Erase" Foreground="White" Margin="0,184,0,0" HorizontalAlignment="Left" Width="310" Height="116" VerticalAlignment="Top">
             <Grid>
-                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintImageDemo" Content="Print Image Demo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="ButtonPrintImageDemo_Click" Width="106" Height="29"/>
-                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonEraseCard" Content="Erase" HorizontalAlignment="Left" Margin="162,10,0,0" VerticalAlignment="Top" Click="ButtonEraseCard_Click" Width="80" Height="29"/>
-                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintTextDemo" Content="Print Text Demo" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Click="ButtonPrintTextDemo_Click" Width="106" Height="29"/>
-                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintFullDemo" Content="Print Full Demo" HorizontalAlignment="Left" Margin="162,44,0,0" VerticalAlignment="Top" Click="ButtonPrintFullDemo_Click" Width="106" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintImageDemo" Content="Image Demo" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="ButtonPrintImageDemo_Click" Width="106" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonEraseCard" Content="Erase" HorizontalAlignment="Left" Margin="162,10,0,0" VerticalAlignment="Top" Click="ButtonEraseCard_Click" Width="106" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintTextDemo" Content="Text Demo" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Click="ButtonPrintTextDemo_Click" Width="106" Height="29"/>
+                <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonPrintFullDemo" Content="Full Demo" HorizontalAlignment="Left" Margin="162,44,0,0" VerticalAlignment="Top" Click="ButtonPrintFullDemo_Click" Width="106" Height="29"/>
             </Grid>
         </GroupBox>
 
