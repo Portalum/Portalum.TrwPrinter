@@ -1,6 +1,9 @@
 ﻿namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
 {
-    public enum TextOrientation
+    /// <summary>
+    /// Element Orientation
+    /// </summary>
+    public enum ElementOrientation
     {
         /// <summary>
         /// Normal

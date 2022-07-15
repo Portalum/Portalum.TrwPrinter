@@ -251,8 +251,8 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             printDocument.AddElement(new TextPrintElement("X840/Y0", 840, 0, TextSize.Small));
             printDocument.AddElement(new TextPrintElement("X840/Y65", 840, 65, TextSize.Small));
 
-            printDocument.AddElement(new TextPrintElement("X200/Y65 Rotated90", 200, 65, TextSize.Medium, TextOrientation.Rotated90));
-            printDocument.AddElement(new TextPrintElement("X300/Y20 double", 300, 20, TextSize.Medium, TextOrientation.Normal, true, true));
+            printDocument.AddElement(new TextPrintElement("X200/Y65 Rotated90", 200, 65, TextSize.Medium, ElementOrientation.Rotated90));
+            printDocument.AddElement(new TextPrintElement("X300/Y20 double", 300, 20, TextSize.Medium, ElementOrientation.Normal, true, true));
 
             await this._printerClient.PrintDocumentAsync(printDocument);
         }
@@ -274,10 +274,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
             var filePath = openFileDialog.FileName;
 
             var printDocument = new PrintDocument();
-            printDocument.AddElement(new ImagePrintElement(filePath, 0, 400, 10, 60));
-            printDocument.AddElement(new TextPrintElement("Max Mustermann", 500, 40, TextSize.Large));
-            printDocument.AddElement(new TextPrintElement("Langestraße 4a", 500, 35, TextSize.Medium));
-            printDocument.AddElement(new TextPrintElement("10115 Berlin", 500, 30, TextSize.Medium));
+            printDocument.AddElement(new ImagePrintElement(filePath, 0, 400, 10, 60, ElementOrientation.Normal));
+            printDocument.AddElement(new TextPrintElement("Max Mustermann", 500, 40, TextSize.Large, ElementOrientation.Normal));
+            printDocument.AddElement(new TextPrintElement("Langestraße 4a", 500, 35, TextSize.Medium, ElementOrientation.Normal));
+            printDocument.AddElement(new TextPrintElement("10115 Berlin", 500, 30, TextSize.Medium, ElementOrientation.Normal));
 
             await this._printerClient.PrintDocumentAsync(printDocument);
         }

@@ -8,7 +8,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
         private readonly int _positionX;
         private readonly int _positionY;
         private readonly TextSize _textSize;
-        private readonly TextOrientation _textOrientation;
+        private readonly ElementOrientation _elementOrientation;
         private readonly bool _textDoubleWidth;
         private readonly bool _textDoubleHeight;
 
@@ -17,7 +17,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             int positionX = 0,
             int positionY = 0,
             TextSize textSize = TextSize.Medium,
-            TextOrientation textOrientation = TextOrientation.Normal,
+            ElementOrientation elementOrientation = ElementOrientation.Normal,
             bool textDoubleWidth = false,
             bool textDoubleHeight = false)
         {
@@ -25,7 +25,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             this._positionX = positionX;
             this._positionY = positionY;
             this._textSize = textSize;
-            this._textOrientation = textOrientation;
+            this._elementOrientation = elementOrientation;
             this._textDoubleWidth = textDoubleWidth;
             this._textDoubleHeight = textDoubleHeight;
         }
@@ -35,12 +35,12 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             using var memoryStream = new MemoryStream();
 
             //Orientation
-            if (this._textOrientation == TextOrientation.Normal)
+            if (this._elementOrientation == ElementOrientation.Normal)
             {
                 var textOrientationNormalData = new byte[] { 0x1B, 0x4E };
                 await memoryStream.WriteAsync(textOrientationNormalData, 0, textOrientationNormalData.Length, cancellationToken); //N
             }
-            else if (this._textOrientation == TextOrientation.Rotated90)
+            else if (this._elementOrientation == ElementOrientation.Rotated90)
             {
                 var textOrientationRotated90Data = new byte[] { 0x1B, 0x4F };
                 await memoryStream.WriteAsync(textOrientationRotated90Data, 0, textOrientationRotated90Data.Length, cancellationToken); //O
