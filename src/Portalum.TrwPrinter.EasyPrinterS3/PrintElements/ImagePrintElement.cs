@@ -61,6 +61,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
                 .BackgroundColor(Color.White)
                 .DrawImage(image, new Point(0, (int)offsetY), 1f)
                 .Rotate(rotate)
+                .Flip(FlipMode.Vertical)
             );
 
             using var memoryStreamPrintImage = new MemoryStream();

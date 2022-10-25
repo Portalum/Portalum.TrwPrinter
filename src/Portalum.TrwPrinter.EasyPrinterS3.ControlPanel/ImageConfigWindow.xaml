@@ -6,14 +6,29 @@
         xmlns:local="clr-namespace:Portalum.TrwPrinter.EasyPrinterS3.ControlPanel"
         mc:Ignorable="d"
         Title="ImagePositionWindow"
-        Height="229"
-        Width="296"
+        Height="566"
+        Width="514"
         Background="{StaticResource SecondaryColor}" WindowStartupLocation="CenterOwner">
-    <Grid>
-        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonFullSize" Content="Full Size 960x70" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="127" Height="30" Click="ButtonFullSize_Click"/>
-        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonLeftBottom" Content="Bottom Left 200x20" HorizontalAlignment="Left" Margin="10,79,0,0" VerticalAlignment="Top" Click="ButtonLeftBottom200x20_Click" Width="127" Height="29"/>
-        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonBottomRight200_20" Content="Bottom Right 200x20" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Width="127" Height="29" Click="ButtonBottomRight200x20_Click"/>
-        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonHalfSize" Content="Half Size 450x35" HorizontalAlignment="Left" Margin="11,45,0,0" VerticalAlignment="Top" Width="126" Height="29" Click="ButtonHalfSize_Click"/>
-        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonTopRight200_20" Content="Top Right 200x20" HorizontalAlignment="Left" Margin="10,147,0,0" VerticalAlignment="Top" Width="127" Height="29" Click="ButtonTopRight200_20_Click" />
+    <Grid Margin="0,0,0,-6">
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonFullSize" Content="Full Size 960x70" HorizontalAlignment="Left" Margin="5,145,0,0" VerticalAlignment="Top" Width="239" Height="30" Click="ButtonFullSize_Click" Grid.Column="1"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonLeftBottom" Content="Bottom Left 200x20" HorizontalAlignment="Left" Margin="5,317,0,0" VerticalAlignment="Top" Click="ButtonLeftBottom200x20_Click" Width="239" Height="29"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonBottomRight200_20" Content="Bottom Right 200x20" HorizontalAlignment="Left" Margin="256,317,0,0" VerticalAlignment="Top" Width="239" Height="29" Click="ButtonBottomRight200x20_Click"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonHalfSize" Content="Half Size 450x35" HorizontalAlignment="Left" Margin="253,146,0,0" VerticalAlignment="Top" Width="239" Height="29" Click="ButtonHalfSize_Click" Grid.Column="1"/>
+        <Button Style="{StaticResource BaseButtonStyle}" x:Name="ButtonTopRight200_20" Content="Top Right 200x20" HorizontalAlignment="Left" Margin="5,484,0,0" VerticalAlignment="Top" Width="240" Height="29" Click="ButtonTopRight200_20_Click" />
+        <Canvas Margin="5,12,0,0" Background="WhiteSmoke" HorizontalAlignment="Left" Width="239" Height="128" VerticalAlignment="Top">
+            <Rectangle Canvas.Left="10" Canvas.Top="10" Height="108" Width="219" Stroke="Black" StrokeThickness="1" Fill="White" />
+        </Canvas>
+        <Canvas Margin="253,12,0,0" Background="WhiteSmoke" Grid.Column="1" HorizontalAlignment="Left" Width="239" Height="128" VerticalAlignment="Top">
+            <Rectangle Canvas.Left="10" Canvas.Top="58" Height="60" Width="108" Stroke="Black" StrokeThickness="1" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Canvas>
+        <Canvas Margin="4,184,0,0" Background="WhiteSmoke" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Left" Width="240" Height="128" VerticalAlignment="Top">
+            <Rectangle Canvas.Left="10" Canvas.Top="80" Height="38" Width="58" Stroke="Black" StrokeThickness="1" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Canvas>
+        <Canvas Background="WhiteSmoke" Height="128" Canvas.Left="-2" Canvas.Top="172" Width="239" Grid.Column="1" Margin="253,184,16,0" Grid.RowSpan="2" VerticalAlignment="Top">
+            <Rectangle Canvas.Left="171" Canvas.Top="80" Height="38" Width="58" Stroke="Black" StrokeThickness="1" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        </Canvas>
+        <Canvas Margin="5,351,0,0" Background="WhiteSmoke" HorizontalAlignment="Left" Width="240" Height="128" VerticalAlignment="Top">
+            <Rectangle Canvas.Left="172" Canvas.Top="10" Height="38" Width="58" Stroke="Black" StrokeThickness="1" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Canvas>
     </Grid>
 </Window>

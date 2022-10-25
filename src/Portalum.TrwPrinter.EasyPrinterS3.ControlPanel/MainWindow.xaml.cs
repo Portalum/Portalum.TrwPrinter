@@ -229,6 +229,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.ControlPanel
 
             var printDocument = new PrintDocument();
             printDocument.AddElement(new ImagePrintElement(filePath, imageConfigDialog.X1, imageConfigDialog.X2, imageConfigDialog.Y1, imageConfigDialog.Y2));
+            printDocument.AddElement(new TextPrintElement("imagedemo", 0, 60));
             await this._printerClient.PrintDocumentAsync(printDocument);
         }
 
