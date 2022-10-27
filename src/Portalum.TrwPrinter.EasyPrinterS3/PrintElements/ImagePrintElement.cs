@@ -46,10 +46,10 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imageData = File.ReadAllBytes(this._imagePath);
 #endif
 
-            var rotate = 90;
+            var rotate = 0;
             if (this._elementOrientation == ElementOrientation.Rotated90)
             {
-                rotate = 0;
+                rotate = 90;
             }
 
             using var image = Image.Load<Rgba32>(imageData);
@@ -60,6 +60,7 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             printImage.Mutate(o => o
                 .BackgroundColor(Color.White)
                 .DrawImage(image, new Point(0, (int)offsetY), 1f)
+                .Rotate(90)
                 .Flip(FlipMode.Vertical)
             );
 
