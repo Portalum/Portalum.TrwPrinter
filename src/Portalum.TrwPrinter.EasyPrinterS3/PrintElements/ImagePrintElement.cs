@@ -46,24 +46,22 @@ namespace Portalum.TrwPrinter.EasyPrinterS3.PrintElements
             var imageData = File.ReadAllBytes(this._imagePath);
 #endif
 
-            using var image = Image.Load<Rgba32>(imageData);
-
-            using var printImage = new Image<Rgba32>((int)width, (int)(height + offsetY));
-
             var rotate = 90;
             if (this._elementOrientation == ElementOrientation.Rotated90)
             {
                 rotate = 0;
             }
 
+            using var image = Image.Load<Rgba32>(imageData);
+            image.Mutate(x => x.Rotate(rotate).Resize((int)width, (int)height, false));
+
+            using var printImage = new Image<Rgba32>((int)width, (int)(height + offsetY));
+
             printImage.Mutate(o => o
                 .BackgroundColor(Color.White)
                 .DrawImage(image, new Point(0, (int)offsetY), 1f)
-                .Rotate(rotate)
                 .Flip(FlipMode.Vertical)
             );
-
-            image.Mutate(x => x.Resize((int)width, (int)height, false));
 
             using var memoryStreamPrintImage = new MemoryStream();
             await printImage.SaveAsPngAsync(memoryStreamPrintImage);
